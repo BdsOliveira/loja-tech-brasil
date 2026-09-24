@@ -1,7 +1,13 @@
-# Lojinha do PHP Brasil — Modelo de Negócios
+# Loja das Comunidades Tech BR — Modelo de Negócios
 
-> Documento inicial para discussão com a comunidade PHP Brasil.
-> Versão 0.1 — 24/09/2026 — **rascunho aberto a contribuições**
+> Documento para discussão com as comunidades de tecnologia do Brasil (piloto: comunidade PHP Brasil).
+> Versão 0.2 — 24/09/2026 — **rascunho aberto a contribuições**
+> *"Loja das Comunidades Tech BR" é nome provisório.*
+
+**Mudanças da v0.2**
+- Escopo ampliado: de loja do PHP Brasil para **loja oficial das comunidades de tecnologia do Brasil** (qualquer stack).
+- Nova funcionalidade: cliente pode **acompanhar comunidades** e receber e-mail a cada lançamento (§5, §8.7–8.8, §9.6–9.7).
+- **Tabela real de taxas da GeffinPay** e split recalculado por forma de pagamento (§6).
 
 ---
 
@@ -11,29 +17,34 @@
 2. [Problema e proposta de valor](#2-problema-e-proposta-de-valor)
 3. [Envolvidos (atores)](#3-envolvidos-atores)
 4. [Business Model Canvas](#4-business-model-canvas)
-5. [Como o dinheiro circula (split)](#5-como-o-dinheiro-circula-split)
-6. [Regras de negócio](#6-regras-de-negócio)
-7. [Diagramas de fluxo](#7-diagramas-de-fluxo)
-8. [Diagramas de sequência](#8-diagramas-de-sequência)
-9. [Ciclo de vida do pedido](#9-ciclo-de-vida-do-pedido)
-10. [Modelo de dados (conceitual)](#10-modelo-de-dados-conceitual)
-11. [Telas envolvidas](#11-telas-envolvidas)
-12. [Mapa de navegação](#12-mapa-de-navegação)
-13. [Riscos e pontos em aberto](#13-riscos-e-pontos-em-aberto)
-14. [Roadmap sugerido](#14-roadmap-sugerido)
+5. [Acompanhar comunidades](#5-acompanhar-comunidades)
+6. [Como o dinheiro circula (split)](#6-como-o-dinheiro-circula-split)
+7. [Regras de negócio](#7-regras-de-negócio)
+8. [Diagramas de fluxo](#8-diagramas-de-fluxo)
+9. [Diagramas de sequência](#9-diagramas-de-sequência)
+10. [Ciclo de vida do pedido](#10-ciclo-de-vida-do-pedido)
+11. [Modelo de dados (conceitual)](#11-modelo-de-dados-conceitual)
+12. [Telas envolvidas](#12-telas-envolvidas)
+13. [Mapa de navegação](#13-mapa-de-navegação)
+14. [Riscos e pontos em aberto](#14-riscos-e-pontos-em-aberto)
+15. [Roadmap sugerido](#15-roadmap-sugerido)
 
 ---
 
 ## 1. Visão geral
 
-A **Lojinha do PHP Brasil** é um marketplace nichado onde **as comunidades de tecnologia são as lojistas**. Em um só lugar, qualquer pessoa encontra:
+A **Loja das Comunidades Tech BR** é a **loja oficial das comunidades de tecnologia do Brasil**: um marketplace nichado onde **as comunidades são as lojistas**. PHP, Python, JavaScript, Java, Go, Ruby, .NET, dados, DevOps, grupos de mulheres na tecnologia, comunidades regionais: qualquer comunidade aprovada pode vender. Em um só lugar, qualquer pessoa encontra:
 
 - 👕 Camisas oficiais das comunidades
 - ☕ Canecas
-- 🐘 O **elePHPant caracterizado** de cada comunidade
-- 🎟️ Itens **exclusivos de cada edição do PHPeste** (e de outros eventos)
+- 🧸 Os **mascotes caracterizados** de cada comunidade (ex.: o elePHPant da comunidade PHP)
+- 🎟️ Itens **exclusivos de cada edição de evento** (ex.: PHPeste e outros eventos das comunidades)
 
-Cada comunidade cadastra seus produtos, escolhe fornecedores, define sua margem e tem **financeiro próprio**, e pode usar o que arrecadar em eventos, meetups, bolsas, infraestrutura etc.
+Cada comunidade cadastra seus produtos, escolhe fornecedores, define sua margem e tem **financeiro próprio**, e pode usar o que arrecadar para **financiar suas operações e eventos**: meetups, bolsas, infraestrutura etc.
+
+O cliente pode **acompanhar** as comunidades de que gosta e recebe um e-mail sempre que alguma delas lança algo novo.
+
+A comunidade **PHP Brasil** é a comunidade piloto. Os exemplos deste documento usam comunidades PHP, mas as regras valem para qualquer comunidade.
 
 A operação segue um modelo **parecido com dropshipping**:
 
@@ -44,7 +55,7 @@ A operação segue um modelo **parecido com dropshipping**:
 
 ```mermaid
 flowchart LR
-    C((Cliente)) -->|compra| L[Lojinha do PHP Brasil]
+    C((Cliente)) -->|compra| L[Loja das Comunidades Tech BR]
     L -->|pedido| F[Fornecedor]
     F -->|envia produto| C
     L -->|split do pagamento| G[GeffinPay]
@@ -65,16 +76,18 @@ flowchart LR
 | Comunidade precisa comprar estoque antes de vender | Risco financeiro e dinheiro parado |
 | Voluntários cuidam de embalar, enviar e cobrar | Trabalho operacional e desgaste |
 | Pouca transparência sobre o destino do dinheiro | Menos confiança de quem compra |
-| Itens de edição de evento (PHPeste) só vendidos no local | Quem não foi fica sem o item |
+| Itens de edição de evento (ex.: PHPeste) só vendidos no local | Quem não foi fica sem o item |
+| Fã de uma comunidade não fica sabendo quando sai produto novo | Venda perdida; lançamento depende de post em rede social |
+| Cada comunidade reinventa a própria loja | Esforço repetido em todo o ecossistema |
 
 ### Proposta de valor por ator
 
 | Ator | Valor entregue |
 |---|---|
-| **Cliente / membro da comunidade** | Um lugar único e confiável, preços acessíveis, frete calculado na hora, rastreio, e a certeza de que apoia a comunidade |
-| **Comunidade (lojista)** | Loja pronta sem estoque, sem operação logística, recebimento automático e financeiro separado para investir em eventos |
-| **Fornecedor** | Canal de vendas recorrente, pedidos organizados em painel próprio, recebimento automático no split |
-| **Ecossistema PHP BR** | Fortalece a marca das comunidades, financia eventos e aumenta a visibilidade do PHPeste e dos meetups |
+| **Cliente / membro da comunidade** | Um lugar único e confiável, preços acessíveis, frete calculado na hora, rastreio, a certeza de que apoia a comunidade e aviso de lançamentos das comunidades que acompanha |
+| **Comunidade (lojista)** | Loja pronta sem estoque, sem operação logística, recebimento automático, financeiro separado para investir em eventos e público de seguidores avisado a cada lançamento |
+| **Fornecedor** | Canal de vendas recorrente com várias comunidades, pedidos organizados em painel próprio, recebimento automático no split |
+| **Ecossistema tech BR** | Fortalece a marca das comunidades, financia eventos, aumenta a visibilidade dos meetups e aproxima comunidades de stacks diferentes |
 
 ---
 
@@ -106,15 +119,18 @@ flowchart TB
     OWN -->|cadastra| FORC
     Comunidades -->|usam| FORP
     CLI -->|compra de| Comunidades
+    CLI -->|acompanha| Comunidades
+    Comunidades -.->|lançamentos por e-mail| MAIL
+    MAIL -.-> CLI
 ```
 
 | Ator | Descrição | Principais ações |
 |---|---|---|
-| **Cliente** | Pessoa que compra na loja | Navegar, montar carrinho, calcular frete, pagar, acompanhar pedido |
-| **Administrador da plataforma** | Mantenedores da Lojinha | Aprovar comunidades, homologar fornecedores globais, moderar produtos, mediar disputas |
-| **Comunidade (lojista)** | Ex.: PHP Brasil, PHPeste, PHP-SP, PHP-PE… | Cadastrar produtos, fornecedores e margens, ver vendas e financeiro |
+| **Cliente** | Pessoa que compra na loja | Navegar, montar carrinho, calcular frete, pagar, acompanhar pedido, **acompanhar comunidades** |
+| **Administrador da plataforma** | Mantenedores da Loja | Aprovar comunidades, homologar fornecedores globais, moderar produtos, mediar disputas, manter tabela de taxas |
+| **Comunidade (lojista)** | Qualquer comunidade de tecnologia aprovada. Ex.: PHP Brasil, PHPeste, grupos de Python, JS, Java, dados, DevOps… | Cadastrar produtos, coleções, fornecedores e margens, ver vendas, financeiro e nº de seguidores |
 | **Membro da comunidade** | Pessoa com acesso ao painel da comunidade (N por comunidade) | Papéis: **Dono** (tudo, incluindo financeiro e membros) e **Colaborador** (produtos e pedidos) |
-| **Fornecedor** | Gráfica, fábrica de canecas, artesão do elePHPant etc. | Receber pedidos, atualizar status, informar rastreio, manter preço de custo e prazo de produção |
+| **Fornecedor** | Gráfica, fábrica de canecas, ateliê de mascotes/pelúcias etc. | Receber pedidos, atualizar status, informar rastreio, manter preço de custo e prazo de produção |
 | **Fornecedor da plataforma** | Fornecedor homologado pelo admin e disponível para **todas** as comunidades | Mesmas ações de fornecedor |
 | **Fornecedor próprio** | Cadastrado por uma comunidade e visível **só para ela** | Mesmas ações de fornecedor |
 | **GeffinPay** | Gateway de pagamento com split | Cobrar o cliente, dividir o valor e repassar para cada recebedor |
@@ -126,19 +142,53 @@ flowchart TB
 
 | Bloco | Conteúdo |
 |---|---|
-| **Segmentos de clientes** | Devs PHP e entusiastas; participantes de eventos (PHPeste etc.); empresas que patrocinam ou presenteiam times; colecionadores de elePHPants |
-| **Proposta de valor** | Todos os produtos oficiais das comunidades em um só lugar, com preço acessível e dinheiro revertido para a própria comunidade |
-| **Canais** | Site da Lojinha; divulgação nas comunidades (Telegram, Discord, redes sociais); QR code em eventos e meetups; links por comunidade (`/c/phpeste`) |
-| **Relacionamento** | Comunitário e transparente: página da comunidade mostrando para onde vai o dinheiro; notificações de pedido por e-mail |
-| **Fontes de receita** | Margem da comunidade sobre o custo do fornecedor. *(Em aberto: pequena taxa da plataforma para cobrir infra; ver §13)* |
+| **Segmentos de clientes** | Pessoas desenvolvedoras e entusiastas de qualquer stack; participantes de eventos; empresas que patrocinam ou presenteiam times; colecionadores de mascotes (elePHPant etc.) |
+| **Proposta de valor** | Todos os produtos oficiais das comunidades de tecnologia do Brasil em um só lugar, com preço acessível e dinheiro revertido para a própria comunidade |
+| **Canais** | Site da Loja; divulgação nas comunidades (Telegram, Discord, redes sociais); QR code em eventos e meetups; links por comunidade (`/c/phpeste`); **e-mail de lançamento para seguidores** |
+| **Relacionamento** | Comunitário e transparente: página da comunidade mostrando para onde vai o dinheiro; **acompanhar comunidades**; notificações de pedido e de lançamentos por e-mail |
+| **Fontes de receita** | Margem da comunidade sobre o custo do fornecedor. *(Em aberto: pequena taxa da plataforma para cobrir infra; ver §14)* |
 | **Recursos-chave** | Plataforma (código aberto?), integração GeffinPay (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
 | **Atividades-chave** | Manter a plataforma; homologar fornecedores; apoiar comunidades a subir produtos; mediar problemas de entrega |
 | **Parcerias-chave** | Fornecedores (gráficas, canecas, pelúcias); GeffinPay; Correios; organizações dos eventos |
-| **Estrutura de custos** | Hospedagem e domínio; taxas do gateway (por transação); envio de e-mails; tempo de voluntários; eventual contrato com os Correios |
+| **Estrutura de custos** | Hospedagem e domínio; taxas do gateway (por transação, ver §6); envio de e-mails (cresce com o nº de seguidores); tempo de voluntários; eventual contrato com os Correios |
 
 ---
 
-## 5. Como o dinheiro circula (split)
+## 5. Acompanhar comunidades
+
+O cliente pode **acompanhar quantas comunidades quiser**. Sempre que uma comunidade acompanhada **publicar algo novo**, o cliente recebe um **e-mail** sobre o lançamento.
+
+### Eventos que geram notificação
+
+A funcionalidade é pensada como **eventos de lançamento da comunidade**. Hoje são dois tipos, e novos tipos entram sem mudar o mecanismo:
+
+| Evento | Quando dispara | Conteúdo do e-mail |
+|---|---|---|
+| `produto_publicado` | Produto passa de rascunho para **publicado** (não dispara em edição de produto já publicado) | Foto, nome, preço, link do produto |
+| `colecao_publicada` | Coleção/edição é publicada (ex.: *PHPeste 2026*) | Banner, período de venda, tiragem, produtos da coleção |
+| *futuro:* `pre_venda_aberta`, `produto_reposto`, `evento_anunciado`, `cupom_criado`… | Definido quando a funcionalidade existir | Modelo de e-mail próprio |
+
+### Como funciona
+
+```mermaid
+flowchart LR
+    CLI((Cliente)) -->|Acompanhar| SEG[(Seguidores da comunidade)]
+    COM[Comunidade] -->|publica produto / coleção / ...| EVT[Evento de lançamento]
+    EVT --> AGR[Agrupador<br/>janela de 30 min]
+    AGR --> FILA[Fila de e-mails]
+    SEG --> FILA
+    FILA -->|1 e-mail por seguidor| CLI
+```
+
+- **Agrupamento:** se a comunidade publicar vários produtos de uma vez (ex.: 8 camisas de uma coleção), o seguidor recebe **um e-mail** com todos os lançamentos, e não 8 e-mails. Os eventos da mesma comunidade são agrupados numa janela curta (sugestão: 30 min, configurável).
+- **Preferências:** o cliente escolhe na conta quais tipos de lançamento quer receber e pode pausar todos.
+- **Descadastro em 1 clique:** todo e-mail tem link para deixar de acompanhar aquela comunidade ou parar todos os e-mails de lançamento (LGPD e boas práticas antispam).
+- **Quem pode acompanhar:** só cliente logado com e-mail confirmado (evita spam para e-mails de terceiros).
+- **Para a comunidade:** o painel mostra o número de seguidores e quantos e-mails cada lançamento gerou. A comunidade **não** vê os e-mails dos seguidores.
+
+---
+
+## 6. Como o dinheiro circula (split)
 
 ### Composição do preço
 
@@ -147,18 +197,44 @@ Preço de venda do produto = Custo do fornecedor + Margem da comunidade
 Total do pedido           = Σ (Preço de venda × qtd) + Σ Frete por fornecedor
 ```
 
+### Tabela de taxas da GeffinPay
+
+| Forma de pagamento | Taxa | Tipo |
+|---|---|---|
+| **Pix** | R$ 2,49 | Fixa por transação |
+| **Boleto** | R$ 2,49 | Fixa por transação |
+| **Crédito à vista** | R$ 0,49 + 3,99% | Fixa + percentual sobre o total |
+| **Crédito parcelado (2x a 6x)** | R$ 0,49 + 4,49% | Fixa + percentual sobre o total |
+
+- Pix e boleto têm **taxa fixa em centavos**, não importa o valor do pedido. Só o cartão de crédito tem parte percentual.
+- Parcelamento **máximo de 6x**. O parcelamento é **sem juros para o cliente**: a diferença de taxa é absorvida (ver regra abaixo).
+- A taxa é cobrada **uma vez por pedido** (uma transação), mesmo com várias comunidades e fornecedores no carrinho.
+- A tabela fica **configurável no admin com data de vigência**, e cada pagamento guarda a taxa aplicada (*snapshot*). Se a GeffinPay mudar os preços, pedidos antigos não mudam.
+
+**Fórmulas** (arredondamento em centavos, meio para cima):
+
+```
+Pix / Boleto         taxa = 2,49
+Crédito à vista      taxa = 0,49 + arred(total × 3,99%)
+Crédito 2x a 6x      taxa = 0,49 + arred(total × 4,49%)
+```
+
 ### Regra de divisão proposta *(a validar)*
 
 | Recebedor | Recebe |
 |---|---|
 | **Fornecedor** | Custo dos itens + frete cobrado (é ele quem posta) |
-| **Comunidade** | Margem dos itens − taxa do gateway (proporcional) |
-| **GeffinPay** | Taxa da transação |
-| **Plataforma** *(opcional)* | % fixa para manutenção, se aprovado pela comunidade |
+| **Comunidade** | Margem dos itens − sua parte da taxa do gateway |
+| **GeffinPay** | Taxa da transação (tabela acima) |
+| **Plataforma** *(opcional)* | % fixa para manutenção, se aprovado pelas comunidades |
 
 > A proposta desconta a taxa do gateway da margem da comunidade para que o fornecedor receba **sempre o valor cheio** que informou. Assim o preço de custo fica previsível para ele.
+>
+> ⚠️ No cartão, a parte percentual incide sobre o **total do pedido, incluindo o frete**. A comunidade paga a taxa sobre o valor que vai para o fornecedor também. Isso precisa ficar claro no simulador de margem (tela C04).
 
-### Exemplo numérico *(valores ilustrativos, taxa fictícia de 3,99% + R$ 0,49)*
+**Rateio entre comunidades:** quando o pedido tem itens de mais de uma comunidade, a taxa é dividida **proporcionalmente à margem** de cada uma. Os centavos que sobram do arredondamento vão para a comunidade com a maior margem, para a soma bater exatamente com a taxa.
+
+### Exemplo 1 — um produto, uma comunidade
 
 | Item | Valor |
 |---|---|
@@ -168,12 +244,26 @@ Total do pedido           = Σ (Preço de venda × qtd) + Σ Frete por fornecedo
 | Frete PAC (cotação Correios) | R$ 22,00 |
 | **Total pago pelo cliente** | **R$ 92,00** |
 
-| Split | Cálculo | Valor |
-|---|---|---|
-| GeffinPay | 92,00 × 3,99% + 0,49 | R$ 4,16 |
-| Fornecedor | 45,00 + 22,00 | R$ 67,00 |
-| Comunidade PHPeste | 25,00 − 4,16 | R$ 20,84 |
-| **Soma** | | **R$ 92,00** ✅ |
+| Forma de pagamento | Taxa GeffinPay | Fornecedor | Comunidade | Soma |
+|---|---|---|---|---|
+| Pix | R$ 2,49 | R$ 67,00 | **R$ 22,51** | R$ 92,00 ✅ |
+| Boleto | R$ 2,49 | R$ 67,00 | **R$ 22,51** | R$ 92,00 ✅ |
+| Crédito à vista | 0,49 + 3,67 = R$ 4,16 | R$ 67,00 | **R$ 20,84** | R$ 92,00 ✅ |
+| Crédito 2x–6x | 0,49 + 4,13 = R$ 4,62 | R$ 67,00 | **R$ 20,38** | R$ 92,00 ✅ |
+
+> Em pedidos pequenos, Pix e boleto ficam mais baratos para a comunidade. Em pedidos maiores, a taxa fixa vale ainda mais a pena: num pedido de R$ 300, o Pix custa R$ 2,49 e o crédito à vista custa R$ 12,46. Vale incentivar o Pix na tela de pagamento.
+
+### Exemplo 2 — carrinho com duas comunidades e dois fornecedores
+
+Carrinho da tela L06: Camisa PHPeste (margem R$ 25) + Camisa PHP-SP (margem R$ 20) + mascote elePHPant PHPeste (margem R$ 40). Total R$ 307,00, sendo R$ 255,00 de produtos e R$ 52,00 de frete. Margens: **PHPeste R$ 65,00** e **PHP-SP R$ 20,00** (soma R$ 85,00).
+
+| Forma | Taxa total | PHPeste (65/85) | PHP-SP (20/85) | PHPeste recebe | PHP-SP recebe |
+|---|---|---|---|---|---|
+| Pix / Boleto | R$ 2,49 | R$ 1,90 | R$ 0,59 | R$ 63,10 | R$ 19,41 |
+| Crédito à vista | 0,49 + 12,25 = R$ 12,74 | R$ 9,74 | R$ 3,00 | R$ 55,26 | R$ 17,00 |
+| Crédito 2x–6x | 0,49 + 13,78 = R$ 14,27 | R$ 10,91 | R$ 3,36 | R$ 54,09 | R$ 16,64 |
+
+Os fornecedores recebem o mesmo valor em qualquer forma de pagamento (custo + frete de cada envio).
 
 ### Carrinho com várias comunidades e fornecedores
 
@@ -181,22 +271,23 @@ Um único checkout pode ter itens de comunidades e fornecedores diferentes. O pe
 
 ```mermaid
 flowchart TB
-    P[Pedido #1001 - R$ 210,00] --> SP1[Sub-pedido A<br/>Fornecedor: Gráfica X<br/>Camisa PHPeste + Camisa PHP-SP]
-    P --> SP2[Sub-pedido B<br/>Fornecedor: Ateliê elePHPant<br/>elePHPant PHPeste]
+    P[Pedido #1001 - R$ 307,00] --> SP1[Sub-pedido A<br/>Fornecedor: Gráfica X<br/>Camisa PHPeste + Camisa PHP-SP]
+    P --> SP2[Sub-pedido B<br/>Fornecedor: Ateliê de mascotes<br/>elePHPant PHPeste]
     SP1 --> S1[Split: Gráfica X custo+frete A]
     SP1 --> S2[Split: PHPeste margem camisa]
     SP1 --> S3[Split: PHP-SP margem camisa]
     SP2 --> S4[Split: Ateliê custo+frete B]
-    SP2 --> S5[Split: PHPeste margem elePHPant]
-    P --> S6[Split: GeffinPay taxa]
+    SP2 --> S5[Split: PHPeste margem mascote]
+    P --> S6[Split: GeffinPay taxa única do pedido<br/>descontada das comunidades]
 ```
 
 ---
 
-## 6. Regras de negócio
+## 7. Regras de negócio
 
 ### Comunidades e membros
-- **RN01** — Comunidade só vende após aprovação do administrador da plataforma.
+- **RN01** — Comunidade só vende após aprovação do administrador da plataforma. Critério sugerido: ser comunidade de tecnologia brasileira, sem fins lucrativos, com atividade pública recente (meetups, eventos, grupo ativo) e responsáveis identificados.
+- **RN01a** — Comunidade informa as **tecnologias/temas** (ex.: PHP, Python, dados) e a **região**, usados em filtros e busca na loja.
 - **RN02** — Comunidade precisa de conta recebedora (subconta) ativa na GeffinPay para publicar produtos.
 - **RN03** — Uma comunidade tem **1 ou mais membros**; ao menos um com papel **Dono**.
 - **RN04** — Só **Dono** vê o financeiro, altera dados bancários e gerencia membros.
@@ -221,11 +312,28 @@ flowchart TB
 - **RN17** — Fornecedor tem **X dias úteis** (a definir) para informar o código de rastreio; se não informar, o pedido é sinalizado ao admin e à comunidade.
 - **RN18** — Cancelamento antes da produção gera estorno total; depois da produção, segue a política da comunidade e o CDC (direito de arrependimento de 7 dias para compras online).
 
+### Taxas e split
+- **RN19** — Taxas da GeffinPay: **Pix R$ 2,49**, **boleto R$ 2,49** (fixas), **crédito à vista R$ 0,49 + 3,99%**, **crédito 2x–6x R$ 0,49 + 4,49%**. Parcelamento máximo de 6x, sem juros para o cliente.
+- **RN20** — A taxa é cobrada uma vez por pedido e descontada das **comunidades**, rateada **proporcionalmente à margem** de cada uma; a sobra de centavos do arredondamento vai para a comunidade de maior margem.
+- **RN21** — O fornecedor recebe sempre **custo + frete**, sem desconto de taxa.
+- **RN22** — No checkout, formas de pagamento cuja taxa seria **maior que a soma das margens** do pedido não são oferecidas (ex.: pedido barato com frete alto pode não aceitar crédito parcelado).
+- **RN23** — Na tela de produto (C04), a comunidade vê o valor líquido da margem nas 4 formas de pagamento. O sistema **alerta** quando a margem líquida no crédito parcelado fica abaixo de um mínimo (sugestão: R$ 1,00).
+- **RN24** — A tabela de taxas é versionada com **data de vigência**; cada pagamento guarda a taxa aplicada.
+
+### Acompanhar comunidades
+- **RN25** — Cliente logado e com e-mail confirmado pode acompanhar **quantas comunidades quiser** e deixar de acompanhar a qualquer momento.
+- **RN26** — Geram notificação os **eventos de lançamento** da comunidade: hoje `produto_publicado` e `colecao_publicada`. Novos tipos de evento podem ser adicionados sem mudar a regra de envio.
+- **RN27** — Só a **primeira publicação** dispara notificação. Editar, despublicar e republicar o mesmo produto não gera novo e-mail.
+- **RN28** — Eventos da mesma comunidade em uma janela curta (sugestão: 30 min) são **agrupados em um único e-mail** por seguidor.
+- **RN29** — Produto publicado **dentro de uma coleção** que está sendo publicada entra no e-mail da coleção, não em um e-mail separado.
+- **RN30** — Todo e-mail de lançamento tem link de **descadastro em 1 clique** (desta comunidade ou de todos os lançamentos). O cliente escolhe na conta quais tipos de evento quer receber.
+- **RN31** — A comunidade vê **apenas o número** de seguidores, nunca os dados pessoais deles.
+
 ---
 
-## 7. Diagramas de fluxo
+## 8. Diagramas de fluxo
 
-### 7.1 Onboarding da comunidade
+### 8.1 Onboarding da comunidade
 
 ```mermaid
 flowchart TD
@@ -241,7 +349,7 @@ flowchart TD
     J --> K[Convida outros membros<br/>papel Dono ou Colaborador]
 ```
 
-### 7.2 Cadastro de fornecedor
+### 8.2 Cadastro de fornecedor
 
 ```mermaid
 flowchart TD
@@ -257,7 +365,7 @@ flowchart TD
     C --> I
 ```
 
-### 7.3 Cadastro de produto
+### 8.3 Cadastro de produto
 
 ```mermaid
 flowchart TD
@@ -266,16 +374,17 @@ flowchart TD
     C --> D[Seleciona item do catálogo do fornecedor<br/>ex.: Camisa algodão P/M/G/GG]
     D --> E[Sistema traz custo, peso, dimensões e prazo]
     E --> F[Define margem<br/>R$ fixo ou %]
-    F --> G[Sistema mostra preço final<br/>e simulação do split]
+    F --> G[Sistema mostra preço final<br/>e margem líquida por forma de pagamento<br/>Pix, boleto, crédito 1x, crédito 2x-6x]
     G --> H{Faz parte de edição/coleção?}
     H -- Sim --> I[Vincula coleção<br/>ex.: PHPeste 2026<br/>período e tiragem]
     H -- Não --> J
     I --> J{Publicar agora?}
     J -- Sim --> K[Produto visível na vitrine]
+    K --> K2[Evento produto_publicado<br/>notifica seguidores - ver 8.8]
     J -- Não --> L[Salvo como rascunho]
 ```
 
-### 7.4 Jornada de compra
+### 8.4 Jornada de compra
 
 ```mermaid
 flowchart TD
@@ -289,7 +398,7 @@ flowchart TD
     G --> H[Cliente escolhe PAC / SEDEX por grupo]
     H --> I[Login ou cadastro rápido]
     I --> J[Endereço e dados pessoais]
-    J --> K[Escolhe pagamento<br/>Pix / Cartão / Boleto]
+    J --> K[Escolhe pagamento<br/>Pix / Boleto / Crédito até 6x<br/>opções filtradas pela RN22]
     K --> L[GeffinPay processa com split]
     L --> M{Aprovado?}
     M -- Não --> N[Mostra erro e permite nova tentativa] --> K
@@ -297,7 +406,7 @@ flowchart TD
     O --> P[E-mail de confirmação ao cliente]
 ```
 
-### 7.5 Atendimento do pedido pelo fornecedor
+### 8.5 Atendimento do pedido pelo fornecedor
 
 ```mermaid
 flowchart TD
@@ -317,7 +426,7 @@ flowchart TD
     C -.prazo estourado sem rastreio.-> X[Alerta para admin e comunidade]
 ```
 
-### 7.6 Cancelamento e estorno
+### 8.6 Cancelamento e estorno
 
 ```mermaid
 flowchart TD
@@ -335,18 +444,55 @@ flowchart TD
     J --> K[E-mails para cliente, comunidade e fornecedor]
 ```
 
+### 8.7 Acompanhar uma comunidade
+
+```mermaid
+flowchart TD
+    A([Cliente na página da comunidade<br/>ou do produto]) --> B[Clica em 'Acompanhar']
+    B --> C{Está logado?}
+    C -- Não --> D[Login ou cadastro rápido] --> E
+    C -- Sim --> E{E-mail confirmado?}
+    E -- Não --> F[Envia e-mail de confirmação] --> G[Cliente confirma] --> H
+    E -- Sim --> H[Registra que o cliente acompanha a comunidade]
+    H --> I[Botão muda para 'Acompanhando ✓'<br/>contador de seguidores +1]
+    I --> J[Cliente pode ajustar preferências<br/>em Minha conta › Comunidades]
+    J --> K{Deixar de acompanhar?}
+    K -- Sim --> L[Remove registro, contador −1]
+```
+
+### 8.8 Notificação de lançamento para seguidores
+
+```mermaid
+flowchart TD
+    A([Comunidade publica produto ou coleção]) --> B{Primeira publicação?}
+    B -- Não --> Z([Não notifica])
+    B -- Sim --> C[Registra evento de lançamento<br/>tipo, comunidade, referência]
+    C --> D{Já existe lote aberto<br/>desta comunidade?}
+    D -- Sim --> E[Adiciona evento ao lote]
+    D -- Não --> F[Abre lote com janela de 30 min]
+    F --> E
+    E --> G[Janela fecha]
+    G --> H[Busca seguidores ativos da comunidade<br/>que aceitam aquele tipo de evento]
+    H --> I{Há seguidores?}
+    I -- Não --> Z
+    I -- Sim --> J[Monta e-mail do lote<br/>coleção + produtos agrupados]
+    J --> K[Enfileira 1 e-mail por seguidor<br/>com link de descadastro]
+    K --> L[Serviço de e-mail envia]
+    L --> M[Painel da comunidade mostra<br/>e-mails enviados no lançamento]
+```
+
 ---
 
-## 8. Diagramas de sequência
+## 9. Diagramas de sequência
 
-### 8.1 Cálculo de frete no carrinho
+### 9.1 Cálculo de frete no carrinho
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Cliente
-    participant Loja as Lojinha (front)
-    participant API as Lojinha (back-end)
+    participant Loja as Loja (front)
+    participant API as Loja (back-end)
     participant DB as Banco de dados
     participant COR as API Correios
 
@@ -363,21 +509,23 @@ sequenceDiagram
     Loja-->>Cliente: Exibe opções e total
 ```
 
-### 8.2 Checkout e pagamento com split
+### 9.2 Checkout e pagamento com split
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Cliente
-    participant Loja as Lojinha (back-end)
+    participant Loja as Loja (back-end)
     participant DB as Banco de dados
     participant GEF as GeffinPay
 
     Cliente->>Loja: Confirma pedido (endereço, frete, forma de pagamento)
     Loja->>DB: Revalida preço, estoque/tiragem e frete
     Loja->>DB: Cria Pedido + Sub-pedidos (status: aguardando pagamento)
-    Loja->>Loja: Calcula regras de split<br/>(fornecedores: custo+frete, comunidades: margem − taxa)
-    Loja->>GEF: Cria cobrança {valor, método, splits[recebedor, valor]}
+    Loja->>DB: Busca tabela de taxas vigente
+    Loja->>Loja: Calcula taxa pela forma de pagamento<br/>(Pix/boleto 2,49 · crédito 0,49 + 3,99% ou 4,49%)
+    Loja->>Loja: Calcula split<br/>(fornecedores: custo+frete, comunidades: margem − taxa rateada)
+    Loja->>GEF: Cria cobrança {valor, método, parcelas, splits[recebedor, valor]}
     GEF-->>Loja: ID da cobrança + dados (QR Pix / status cartão)
     Loja->>DB: Salva ID da cobrança
     Loja-->>Cliente: Tela de pagamento / confirmação
@@ -390,12 +538,12 @@ sequenceDiagram
     Loja-->>GEF: 200 OK
 ```
 
-### 8.3 Notificação e atendimento pelo fornecedor
+### 9.3 Notificação e atendimento pelo fornecedor
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Loja as Lojinha (back-end)
+    participant Loja as Loja (back-end)
     participant Fila as Fila de jobs
     participant Mail as Serviço de e-mail
     actor Forn as Fornecedor
@@ -420,13 +568,13 @@ sequenceDiagram
     Mail-->>Cliente: "Seu pedido foi enviado: código XX123BR"
 ```
 
-### 8.4 Acompanhamento de rastreio
+### 9.4 Acompanhamento de rastreio
 
 ```mermaid
 sequenceDiagram
     autonumber
     participant Cron as Agendador
-    participant Loja as Lojinha (back-end)
+    participant Loja as Loja (back-end)
     participant COR as API Correios
     participant Mail as Serviço de e-mail
     actor Cliente
@@ -445,13 +593,13 @@ sequenceDiagram
     end
 ```
 
-### 8.5 Estorno
+### 9.5 Estorno
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor Cliente
-    participant Loja as Lojinha (back-end)
+    participant Loja as Loja (back-end)
     actor Com as Comunidade
     actor Forn as Fornecedor
     participant GEF as GeffinPay
@@ -472,9 +620,69 @@ sequenceDiagram
     Loja-->>Forn: Atualiza painel
 ```
 
+### 9.6 Acompanhar comunidade
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Cliente
+    participant Front as Loja (front)
+    participant API as Loja (back-end)
+    participant DB as Banco de dados
+
+    Cliente->>Front: Clica "Acompanhar" na página da comunidade
+    Front->>API: POST /comunidades/{slug}/seguidores
+    API->>API: Verifica sessão e e-mail confirmado
+    alt Não logado ou e-mail não confirmado
+        API-->>Front: 401 / 403
+        Front-->>Cliente: Login, cadastro ou confirmação de e-mail
+    else OK
+        API->>DB: INSERT seguidor (cliente, comunidade)<br/>ignora se já existir
+        DB-->>API: OK
+        API-->>Front: 201 {seguindo: true, total_seguidores}
+        Front-->>Cliente: "Acompanhando ✓"
+    end
+
+    Cliente->>Front: Clica "Deixar de acompanhar"
+    Front->>API: DELETE /comunidades/{slug}/seguidores
+    API->>DB: Remove seguidor
+    API-->>Front: 204
+```
+
+### 9.7 Lançamento e envio de e-mail para seguidores
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Membro as Membro da comunidade
+    participant API as Loja (back-end)
+    participant DB as Banco de dados
+    participant Fila as Fila de jobs
+    participant Mail as Serviço de e-mail
+    actor Seg as Seguidores
+
+    Membro->>API: Publica produto / coleção
+    API->>DB: Status → publicado (primeira vez)
+    API->>DB: Grava evento de lançamento no lote aberto da comunidade
+    API->>Fila: Agenda "EnviarLote" para o fim da janela (se lote novo)
+    API-->>Membro: Publicado ✓
+
+    Note over Fila: 30 min depois
+    Fila->>DB: Fecha lote e carrega eventos
+    Fila->>DB: Busca seguidores ativos + preferências (em páginas)
+    loop Para cada página de seguidores
+        Fila->>Mail: Envia e-mail do lote<br/>(produtos, coleção, link de descadastro)
+        Mail-->>Seg: "PHPeste lançou 3 produtos novos"
+    end
+    Fila->>DB: Salva nº de e-mails enviados no lote
+
+    Seg->>API: Clica "descadastrar" (link assinado)
+    API->>DB: Remove seguidor ou desliga o tipo de evento
+```
+
 ---
 
-## 9. Ciclo de vida do pedido
+## 10. Ciclo de vida do pedido
 
 Status aplicado a cada **sub-pedido** (um por fornecedor). O pedido geral mostra o status agregado.
 
@@ -502,7 +710,7 @@ stateDiagram-v2
 
 ---
 
-## 10. Modelo de dados (conceitual)
+## 11. Modelo de dados (conceitual)
 
 ```mermaid
 erDiagram
@@ -523,11 +731,19 @@ erDiagram
     ITEM_PEDIDO }o--|| PRODUTO : "de"
     PEDIDO ||--|| PAGAMENTO : "pago por"
     PAGAMENTO ||--|{ SPLIT : "dividido em"
+    PAGAMENTO }o--|| TABELA_TAXA : "usa taxa vigente"
+    CLIENTE ||--o{ SEGUIDOR : "acompanha"
+    COMUNIDADE ||--o{ SEGUIDOR : "é acompanhada"
+    COMUNIDADE ||--o{ LOTE_LANCAMENTO : "gera"
+    LOTE_LANCAMENTO ||--|{ EVENTO_LANCAMENTO : "agrupa"
+    COMUNIDADE }o--o{ TECNOLOGIA : "tem temas"
 
     COMUNIDADE {
         uuid id
         string nome
         string slug
+        string regiao
+        int total_seguidores
         string status "pendente|aprovada|suspensa"
         string geffinpay_recebedor_id
     }
@@ -593,8 +809,42 @@ erDiagram
     PAGAMENTO {
         uuid id
         string geffinpay_cobranca_id
-        string metodo
+        string metodo "pix|boleto|credito"
+        int parcelas "1 a 6"
+        decimal taxa_fixa "snapshot"
+        decimal taxa_percentual "snapshot"
+        decimal taxa_total
         string status
+    }
+    TABELA_TAXA {
+        uuid id
+        string metodo "pix|boleto|credito_1x|credito_2a6x"
+        decimal fixa "2,49 | 0,49"
+        decimal percentual "0 | 3,99 | 4,49"
+        date vigencia_inicio
+        date vigencia_fim
+    }
+    SEGUIDOR {
+        uuid cliente_id
+        uuid comunidade_id
+        string tipos_evento "lista; vazio = todos"
+        datetime desde
+    }
+    EVENTO_LANCAMENTO {
+        uuid id
+        string tipo "produto_publicado|colecao_publicada|..."
+        string referencia_id
+        datetime criado_em
+    }
+    LOTE_LANCAMENTO {
+        uuid id
+        datetime fecha_em
+        string status "aberto|enviado"
+        int emails_enviados
+    }
+    TECNOLOGIA {
+        uuid id
+        string nome "PHP, Python, Dados..."
     }
     SPLIT {
         uuid id
@@ -608,32 +858,36 @@ erDiagram
 
 ---
 
-## 11. Telas envolvidas
+## 12. Telas envolvidas
 
-### 11.1 Inventário de telas
+### 12.1 Inventário de telas
 
 | # | Área | Tela | Ator | Principais elementos |
 |---|---|---|---|---|
-| L01 | Loja | Home | Cliente | Destaques, coleções ativas (PHPeste 2026), comunidades, mais vendidos |
-| L02 | Loja | Página da comunidade | Cliente | Logo, descrição, "para onde vai o dinheiro", produtos |
-| L03 | Loja | Listagem / busca | Cliente | Filtros por comunidade, categoria, coleção, preço |
+| L01 | Loja | Home | Cliente | Destaques, coleções ativas (ex.: PHPeste 2026), comunidades por tecnologia, lançamentos das comunidades acompanhadas, mais vendidos |
+| L02 | Loja | Página da comunidade | Cliente | Logo, tecnologias, região, descrição, "para onde vai o dinheiro", **botão Acompanhar** + nº de seguidores, coleções, produtos |
+| L03 | Loja | Listagem / busca | Cliente | Filtros por tecnologia, região, comunidade, categoria, coleção, preço |
+| L03b | Loja | Diretório de comunidades | Cliente | Todas as comunidades, filtro por tecnologia e região, Acompanhar direto no card |
 | L04 | Loja | Página de coleção/edição | Cliente | Banner do evento, contagem regressiva, tiragem restante |
-| L05 | Loja | Detalhe do produto | Cliente | Fotos, variações, preço, simulador de frete, prazo, "X% vai para a comunidade" |
+| L05 | Loja | Detalhe do produto | Cliente | Fotos, variações, preço, simulador de frete, prazo, "quanto vai para a comunidade", Acompanhar comunidade |
 | L06 | Loja | Carrinho | Cliente | Itens agrupados por envio, CEP, escolha de frete por grupo |
 | L07 | Loja | Checkout — identificação/endereço | Cliente | Login/cadastro rápido, endereço (autocompletar via CEP) |
-| L08 | Loja | Checkout — pagamento | Cliente | Pix, cartão, boleto; resumo |
+| L08 | Loja | Checkout — pagamento | Cliente | Pix, boleto, crédito 1x a 6x sem juros (filtrado pela RN22); quanto as comunidades recebem em cada opção; resumo |
 | L09 | Loja | Confirmação | Cliente | Número do pedido, QR Pix, próximos passos |
 | L10 | Loja | Minha conta — pedidos | Cliente | Lista, status por envio, rastreio, cancelar/devolver |
+| L11 | Loja | Minha conta — comunidades acompanhadas | Cliente | Lista de comunidades, tipos de lançamento por comunidade, deixar de acompanhar, pausar todos os e-mails |
+| L12 | Loja | Descadastro (página do link do e-mail) | Cliente | Confirmação sem login: deixar esta comunidade ou todos os lançamentos |
 | C01 | Painel Comunidade | Onboarding / cadastro | Membro | Dados da comunidade, status de aprovação, subconta GeffinPay |
-| C02 | Painel Comunidade | Dashboard | Membro | Vendas do período, pedidos pendentes, alertas (custo alterado, atraso) |
+| C02 | Painel Comunidade | Dashboard | Membro | Vendas do período, pedidos pendentes, **nº de seguidores**, alertas (custo alterado, atraso, margem baixa) |
 | C03 | Painel Comunidade | Produtos (lista) | Membro | Status, preço, margem, fornecedor |
-| C04 | Painel Comunidade | Produto (form) | Membro | Dados, fornecedor, variações, margem, simulação de split |
-| C05 | Painel Comunidade | Coleções / edições | Membro | Período, tiragem, produtos vinculados |
+| C04 | Painel Comunidade | Produto (form) | Membro | Dados, fornecedor, variações, margem, margem líquida por forma de pagamento, aviso de que publicar notifica os seguidores |
+| C05 | Painel Comunidade | Coleções / edições | Membro | Período, tiragem, produtos vinculados, publicar coleção (notifica seguidores) |
+| C05b | Painel Comunidade | Lançamentos | Membro | Histórico de lotes de lançamento, e-mails enviados por lote |
 | C06 | Painel Comunidade | Fornecedores | Membro | Da plataforma (catálogo) e próprios; convidar fornecedor |
 | C07 | Painel Comunidade | Pedidos | Membro | Pedidos com itens da comunidade, status, rastreio |
-| C08 | Painel Comunidade | Financeiro | Dono | Recebido, a receber, estornos, extrato por pedido |
+| C08 | Painel Comunidade | Financeiro | Dono | Recebido, a receber, estornos, extrato por pedido com forma de pagamento e taxa |
 | C09 | Painel Comunidade | Membros | Dono | Convidar, papéis, remover |
-| C10 | Painel Comunidade | Configurações | Dono | Perfil público, dados bancários (GeffinPay), política de troca |
+| C10 | Painel Comunidade | Configurações | Dono | Perfil público, tecnologias e região, dados bancários (GeffinPay), política de troca |
 | F01 | Painel Fornecedor | Onboarding | Fornecedor | Aceitar convite, dados, CEP origem, subconta GeffinPay |
 | F02 | Painel Fornecedor | Dashboard | Fornecedor | Novos pedidos, em produção, atrasados |
 | F03 | Painel Fornecedor | Catálogo de itens | Fornecedor | Itens, variações, custo, peso/dimensões, prazo de produção |
@@ -644,7 +898,8 @@ erDiagram
 | A02 | Admin | Comunidades | Admin | Aprovar, suspender |
 | A03 | Admin | Fornecedores da plataforma | Admin | Homologar, suspender |
 | A04 | Admin | Pedidos e disputas | Admin | Busca global, mediação, estornos |
-| A05 | Admin | Configurações | Admin | Taxas, prazos (RN17), integrações |
+| A05 | Admin | Configurações | Admin | **Tabela de taxas GeffinPay com vigência**, janela de agrupamento de lançamentos, prazos (RN17), integrações |
+| A06 | Admin | Tecnologias | Admin | Cadastro de tecnologias/temas usados nos filtros |
 | E01 | E-mail | Pedido confirmado | Cliente | |
 | E02 | E-mail | Novo pedido | Fornecedor | |
 | E03 | E-mail | Pedido enviado (rastreio) | Cliente | |
@@ -652,30 +907,61 @@ erDiagram
 | E05 | E-mail | Estorno | Cliente, Comunidade, Fornecedor | |
 | E06 | E-mail | Convite | Membro, Fornecedor | |
 | E07 | E-mail | Alerta de atraso | Comunidade, Admin | |
+| E08 | E-mail | Lançamento da comunidade (produto e/ou coleção, agrupado) | Seguidor | |
+| E09 | E-mail | Confirmação de e-mail (necessário para acompanhar) | Cliente | |
 
-### 11.2 Wireframes de baixa fidelidade
+### 12.2 Wireframes de baixa fidelidade
 
 **L01 — Home**
 ```
 ┌────────────────────────────────────────────────────────────┐
-│ 🐘 Lojinha do PHP Brasil   [ buscar...        ] 👤  🛒(2)  │
+│ 🛍 Loja das Comunidades Tech BR  [buscar...]    👤  🛒(2)  │
 ├────────────────────────────────────────────────────────────┤
 │  ╔══════════════════════════════════════════════════════╗  │
 │  ║  PHPeste 2026 — itens exclusivos da edição           ║  │
 │  ║  Vendas até 30/11 · tiragem limitada   [Ver coleção] ║  │
 │  ╚══════════════════════════════════════════════════════╝  │
 │                                                            │
-│  Comunidades                                               │
-│  (PHP BR) (PHPeste) (PHP-SP) (PHP-PE) (PHP-RS)  [ver todas]│
+│  Tecnologias                                               │
+│  [PHP] [Python] [JS] [Java] [Go] [Dados] [DevOps] [+]      │
 │                                                            │
-│  Mais vendidos                                             │
+│  Novidades das comunidades que você acompanha              │
+│  ┌────────┐ ┌────────┐ ┌────────┐                          │
+│  │ [img]  │ │ [img]  │ │ [img]  │                          │
+│  │Caneca  │ │Mascote │ │Camisa  │                          │
+│  │PHP BR  │ │PHP-SP  │ │PHPeste │                          │
+│  │R$ 45   │ │R$ 120  │ │R$ 70   │                          │
+│  └────────┘ └────────┘ └────────┘                          │
+│                                                            │
+│  Comunidades em destaque                    [ver todas →]  │
+│  (PHP BR ✓) (PHPeste ✓) (Python X) (JS Y) (Dados Z)        │
+└────────────────────────────────────────────────────────────┘
+```
+
+**L02 — Página da comunidade**
+```
+┌────────────────────────────────────────────────────────────┐
+│ ← Comunidades                                              │
+│ [logo]  Comunidade PHPeste                                 │
+│         PHP · Nordeste         👥 1.284 seguidores         │
+│                                  [ ＋ Acompanhar ]         │
+│                                                            │
+│  Evento de PHP do Nordeste. O dinheiro da loja financia    │
+│  o PHPeste, bolsas de ingresso e meetups na região.        │
+│  💚 R$ 12.430 arrecadados em 2026                          │
+│                                                            │
+│  Coleções                                                  │
+│  [PHPeste 2026 — até 30/11]  [PHPeste 2025 — encerrada]    │
+│                                                            │
+│  Produtos                                                  │
 │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐               │
-│  │ [img]  │ │ [img]  │ │ [img]  │ │ [img]  │               │
-│  │Camisa  │ │Caneca  │ │elePHP  │ │Camisa  │               │
-│  │PHPeste │ │PHP BR  │ │PHP-SP  │ │PHP-PE  │               │
-│  │R$ 70   │ │R$ 45   │ │R$ 120  │ │R$ 65   │               │
+│  │Camisa  │ │Caneca  │ │elePHP- │ │Ecobag  │               │
+│  │R$ 70   │ │R$ 45   │ │ant 120 │ │R$ 35   │               │
 │  └────────┘ └────────┘ └────────┘ └────────┘               │
 └────────────────────────────────────────────────────────────┘
+  Depois de clicar:  [ ✓ Acompanhando ▾ ]
+                       ├ Preferências de e-mail
+                       └ Deixar de acompanhar
 ```
 
 **L05 — Detalhe do produto**
@@ -683,10 +969,10 @@ erDiagram
 ┌────────────────────────────────────────────────────────────┐
 │ ← PHPeste / Camisas                                        │
 │ ┌──────────────────┐  Camisa Oficial PHPeste 2026          │
-│ │                  │  por Comunidade PHPeste               │
+│ │                  │  por Comunidade PHPeste [＋Acompanhar] │
 │ │      [foto]      │                                       │
 │ │                  │  R$ 70,00                             │
-│ └──────────────────┘  💚 R$ 25,00 apoiam a comunidade      │
+│ └──────────────────┘  💚 até R$ 22,51 apoiam a comunidade  │
 │ [▫][▫][▫]                                                  │
 │                       Tamanho: (P) (M) (G) (GG)            │
 │                       Qtd: [- 1 +]                         │
@@ -721,6 +1007,61 @@ erDiagram
 └────────────────────────────────────────────────────────────┘
 ```
 
+**L08 — Checkout: pagamento**
+```
+┌────────────────────────────────────────────────────────────┐
+│ Pagamento                                Total R$ 307,00   │
+├────────────────────────────────────────────────────────────┤
+│ (•) Pix                                                    │
+│     💚 comunidades recebem R$ 82,51                        │
+│ ( ) Boleto (compensa em até 3 dias úteis)                  │
+│     💚 comunidades recebem R$ 82,51                        │
+│ ( ) Cartão de crédito  [1x de R$ 307,00 sem juros ▾]       │
+│     até 6x de R$ 51,17 sem juros                           │
+│     💚 comunidades recebem R$ 72,26 (1x) / R$ 70,73 (2–6x) │
+│                                                            │
+│ 💡 No Pix, as comunidades recebem R$ 10,25 a mais          │
+│                                   [ Pagar R$ 307,00 → ]    │
+└────────────────────────────────────────────────────────────┘
+```
+
+**L11 — Minha conta: comunidades acompanhadas**
+```
+┌────────────────────────────────────────────────────────────┐
+│ Minha conta › Comunidades que acompanho                    │
+├────────────────────────────────────────────────────────────┤
+│ [ ] Pausar todos os e-mails de lançamento                  │
+│                                                            │
+│ PHPeste          ☑ Produtos  ☑ Coleções   [Deixar]         │
+│ PHP Brasil       ☑ Produtos  ☐ Coleções   [Deixar]         │
+│ Python X         ☑ Produtos  ☑ Coleções   [Deixar]         │
+│                                                            │
+│ [+ Descobrir comunidades]                                  │
+└────────────────────────────────────────────────────────────┘
+```
+
+**E08 — E-mail de lançamento (lote agrupado)**
+```
+┌────────────────────────────────────────────────────────────┐
+│ De: Loja das Comunidades Tech BR                           │
+│ Assunto: PHPeste lançou a coleção PHPeste 2026 🎉          │
+├────────────────────────────────────────────────────────────┤
+│ Oi, Fulana! A comunidade PHPeste, que você acompanha,      │
+│ acabou de lançar:                                          │
+│                                                            │
+│ ╔ Coleção PHPeste 2026 · vendas até 30/11 · 200 unid. ╗    │
+│ [img] Camisa Oficial ........ R$ 70   [Ver produto]        │
+│ [img] Caneca ................ R$ 45   [Ver produto]        │
+│ [img] elePHPant PHPeste ..... R$ 120  [Ver produto]        │
+│                                                            │
+│            [ Ver coleção completa → ]                      │
+│                                                            │
+│ Você recebe este e-mail porque acompanha PHPeste.          │
+│ Deixar de acompanhar PHPeste · Parar todos os lançamentos  │
+│ Preferências de e-mail                                     │
+└────────────────────────────────────────────────────────────┘
+```
+
 **C04 — Formulário de produto (painel da comunidade)**
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -739,10 +1080,14 @@ erDiagram
 │           │ Margem: (•) R$ fixo  ( ) %                     │
 │           │ Coleção: [PHPeste 2026 ▾]  Tiragem: [200]      │
 │           │                                                │
-│           │ Simulação do split (camisa M, sem frete):      │
-│           │  Fornecedor R$ 45,00 · Comunidade ~R$ 22,00    │
-│           │  Gateway ~R$ 3,00                              │
+│           │ Margem líquida (camisa M, sem frete):          │
+│           │  Pix ............ taxa 2,49 → R$ 22,51         │
+│           │  Boleto ......... taxa 2,49 → R$ 22,51         │
+│           │  Crédito 1x ..... taxa 3,28 → R$ 21,72         │
+│           │  Crédito 2x–6x .. taxa 3,63 → R$ 21,37         │
+│           │  ⚠ No crédito, o frete também entra na taxa %  │
 │           │                                                │
+│           │ 🔔 Publicar avisa 1.284 seguidores por e-mail  │
 │           │ [Salvar rascunho]  [Publicar]                  │
 └───────────┴────────────────────────────────────────────────┘
 ```
@@ -757,10 +1102,12 @@ erDiagram
 │           │ │R$ 3.420  │ │R$ 1.180  │ │R$ 70     │         │
 │           │ └──────────┘ └──────────┘ └──────────┘         │
 │           │                                                │
-│           │ Pedido │ Data  │ Bruto  │ Taxa  │ Líquido │ St │
-│           │ #1001  │ 20/09 │ 25,00  │ 4,16  │ 20,84   │ ✅ │
-│           │ #1002  │ 21/09 │ 50,00  │ 5,10  │ 44,90   │ ⏳ │
+│           │ Pedido│Forma  │Bruto │Taxa  │Líquido│ St     │
+│           │ #1001 │Créd 1x│ 25,00│ 4,16 │ 20,84 │ ✅     │
+│           │ #1002 │Pix    │ 50,00│ 2,49 │ 47,51 │ ✅     │
+│           │ #1003 │Créd 3x│ 65,00│10,91 │ 54,09 │ ⏳     │
 │           │ ...                                            │
+│           │ Taxa = parte da comunidade na taxa do pedido   │
 │           │                              [Exportar CSV]    │
 └───────────┴────────────────────────────────────────────────┘
 ```
@@ -789,12 +1136,17 @@ erDiagram
 
 ---
 
-## 12. Mapa de navegação
+## 13. Mapa de navegação
 
 ```mermaid
 flowchart LR
     subgraph Loja pública
         L01[Home] --> L02[Comunidade]
+        L01 --> L03b[Diretório de comunidades] --> L02
+        L02 -.Acompanhar.-> L11[Minha conta: comunidades acompanhadas]
+        E08[/E-mail de lançamento/] --> L05
+        E08 --> L04
+        E08 -.descadastro.-> L12[Descadastro]
         L01 --> L03[Busca/Listagem]
         L01 --> L04[Coleção/Edição]
         L02 --> L05[Produto]
@@ -810,6 +1162,7 @@ flowchart LR
     subgraph Painel Comunidade
         C02[Dashboard] --> C03[Produtos] --> C04[Form produto]
         C02 --> C05[Coleções]
+        C02 --> C05b[Lançamentos]
         C02 --> C06[Fornecedores]
         C02 --> C07[Pedidos]
         C02 --> C08[Financeiro]
@@ -827,31 +1180,36 @@ flowchart LR
         A01[Dashboard] --> A02[Comunidades]
         A01 --> A03[Fornecedores]
         A01 --> A04[Pedidos/Disputas]
-        A01 --> A05[Config]
+        A01 --> A05[Config / Taxas]
+        A01 --> A06[Tecnologias]
     end
 ```
 
 ---
 
-## 13. Riscos e pontos em aberto
+## 14. Riscos e pontos em aberto
 
 | # | Tema | Pergunta / risco | Sugestão inicial |
 |---|---|---|---|
-| Q1 | **Taxa do gateway** | Quem absorve a taxa: comunidade, fornecedor ou rateio? | Descontar da margem da comunidade (§5) |
+| Q1 | **Taxa do gateway** | Proposta: comunidades absorvem, rateado pela margem (RN20). A comunidade aceita pagar a taxa % do cartão sobre o frete? Ou repassar ao cliente um acréscimo no parcelado? | Validar com comunidades piloto; alternativa é oferecer parcelado só acima de um valor mínimo |
 | Q2 | **Sustentabilidade da plataforma** | Quem paga hospedagem e manutenção? | Taxa pequena (ex.: 1–3%) ou apoio/patrocínio; decidir com a comunidade |
-| Q3 | **GeffinPay** | Suporta split com N recebedores, estorno parcial com reversão de split e subcontas para PF? | Validar a API antes de fechar a arquitetura |
+| Q3 | **GeffinPay** | Suporta split com N recebedores, estorno parcial com reversão de split, subcontas para PF e parcelamento sem juros com taxa de 4,49% para 2x–6x? Estorno devolve a taxa? Prazo de recebimento (D+?) por forma de pagamento? | Validar a API antes de fechar a arquitetura |
 | Q4 | **API dos Correios** | A API oficial (CWS) exige contrato; cada fornecedor tem o seu? | Cotação com contrato da plataforma ou dos fornecedores; avaliar agregadores (Melhor Envio etc.) como alternativa |
 | Q5 | **Responsabilidade legal** | Quem emite nota fiscal? Comunidades sem CNPJ podem vender? | Fornecedor emite NF da venda do produto; comunidade recebe a margem como intermediação/doação. **Validar com contador** |
 | Q6 | **Chargeback** | Quem arca com contestação de cartão? | Definir regra no termo de uso; possível reserva/retensão da comunidade |
 | Q7 | **Atraso/extravio** | Fornecedor não envia ou produto se perde | Prazo RN17, alerta, reenvio pelo fornecedor, mediação do admin |
 | Q8 | **Qualidade** | Produto ruim afeta a imagem da comunidade | Homologação de fornecedores da plataforma + avaliações de clientes |
-| Q9 | **Direitos de marca** | Uso de marcas (PHP, elePHPant) e logos | Cada comunidade responde pelas próprias artes; verificar diretrizes de uso das marcas |
+| Q9 | **Direitos de marca** | Uso de marcas de linguagens/projetos (PHP, Python, mascotes etc.) e logos | Cada comunidade responde pelas próprias artes; verificar diretrizes de uso das marcas |
 | Q10 | **LGPD** | Fornecedor recebe dados pessoais do cliente (endereço) | Termo de uso + compartilhar só o necessário para entrega |
 | Q11 | **Frete com vários itens** | Somar pesos/dimensões pode dar cotação errada | Fornecedor cadastra embalagens padrão; revisar regra de cubagem |
+| Q12 | **Quem é comunidade?** | Com o escopo aberto a qualquer stack, como evitar empresas ou perfis se passando por comunidade? | Critérios da RN01, aprovação manual e selo "comunidade verificada" |
+| Q13 | **Custo e reputação de e-mail** | Comunidades grandes = milhares de e-mails por lançamento; risco de cair em spam | Agrupamento (RN28), descadastro 1 clique, domínio com SPF/DKIM/DMARC, provedor transacional; acompanhar custo por mil envios |
+| Q14 | **Abuso de lançamentos** | Comunidade publica e despublica para "reenviar" e-mail | RN27 (só a primeira publicação notifica) + limite de lotes por dia por comunidade |
+| Q15 | **Pedido com taxa maior que a margem** | Pedido barato com frete caro no cartão | RN22 esconde a opção; avaliar margem mínima por produto |
 
 ---
 
-## 14. Roadmap sugerido
+## 15. Roadmap sugerido
 
 ```mermaid
 flowchart LR
@@ -862,11 +1220,11 @@ flowchart LR
 
 | Fase | Escopo |
 |---|---|
-| **0 — Validação** | Apresentar este documento à comunidade; responder Q1–Q5; conversar com 2–3 fornecedores e 2–3 comunidades piloto (ex.: PHPeste, PHP BR) |
-| **1 — MVP** | Loja (L01–L10), painel comunidade básico (produtos, pedidos, financeiro), painel fornecedor (pedidos + rastreio), split GeffinPay, frete Correios, e-mails E01–E03. Fornecedores cadastrados manualmente pelo admin |
-| **2 — Escala** | Autoatendimento de comunidades e fornecedores, múltiplos membros e papéis, coleções/edições com tiragem, estorno pelo painel, rastreio automático |
-| **3 — Extras** | Avaliações, cupons, pré-venda de edições, kits (camisa + caneca + elePHPant), relatório público de transparência por comunidade |
+| **0 — Validação** | Apresentar este documento às comunidades; responder Q1–Q5 e Q12; conversar com 2–3 fornecedores e 3–5 comunidades piloto, incluindo ao menos uma fora do PHP (ex.: PHPeste, PHP BR + uma de outra stack) |
+| **1 — MVP** | Loja (L01–L10), painel comunidade básico (produtos, pedidos, financeiro), painel fornecedor (pedidos + rastreio), split GeffinPay com as 4 formas de pagamento e tabela de taxas, frete Correios, e-mails E01–E03. **Acompanhar comunidade simples** (seguir/deixar, e-mail E08 agrupado, descadastro). Fornecedores cadastrados manualmente pelo admin |
+| **2 — Escala** | Autoatendimento de comunidades e fornecedores, múltiplos membros e papéis, diretório por tecnologia/região, coleções/edições com tiragem, estorno pelo painel, rastreio automático, preferências por tipo de lançamento (L11), histórico de lançamentos (C05b) |
+| **3 — Extras** | Avaliações, cupons, pré-venda de edições, kits (camisa + caneca + mascote), novos eventos de lançamento (pré-venda, reposição, evento anunciado), relatório público de transparência por comunidade |
 
 ---
 
-*Contribuições, críticas e ideias são bem-vindas. Abra uma discussão ou fale com os mantenedores.* 🐘💙
+*Contribuições, críticas e ideias são bem-vindas. Abra uma discussão ou fale com os mantenedores.* 💙
