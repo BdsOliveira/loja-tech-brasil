@@ -1,8 +1,16 @@
 # Loja das Comunidades Tech BR — Modelo de Negócios
 
 > Documento para discussão com as comunidades de tecnologia do Brasil (piloto: comunidade PHP Brasil).
-> Versão 0.2 — 24/09/2026 — **rascunho aberto a contribuições**
+> Versão 0.3 — 24/09/2026 — **rascunho aberto a contribuições**
 > *"Loja das Comunidades Tech BR" é nome provisório.*
+
+**Mudanças da v0.3**
+- Monetização da plataforma: **R$ 2,49 por saque** solicitado pela comunidade (§6, RN24c, §9.9).
+- Parcelamento: por padrão a taxa do parcelado é **repassada ao cliente**; a comunidade pode optar por assumir (sem juros) (§6, RN21).
+- Taxa % do cartão pode ser **absorvida pelo fornecedor** mediante acordo com a comunidade (§6, RN22).
+- Destaque para o cliente de **quanto a comunidade recebe a mais no Pix** (RN24).
+- Decidido: parcelado repassado = **taxa inteira** ao cliente (RN21); mascote genérico da linguagem sempre em análise humana (RN33a).
+- Nova **análise de originalidade (anti-plágio)** com avaliação humana antes de publicar produtos (RN32–RN41, §8.9–8.10, §9.8, §10.2).
 
 **Mudanças da v0.2**
 - Escopo ampliado: de loja do PHP Brasil para **loja oficial das comunidades de tecnologia do Brasil** (qualquer stack).
@@ -22,7 +30,7 @@
 7. [Regras de negócio](#7-regras-de-negócio)
 8. [Diagramas de fluxo](#8-diagramas-de-fluxo)
 9. [Diagramas de sequência](#9-diagramas-de-sequência)
-10. [Ciclo de vida do pedido](#10-ciclo-de-vida-do-pedido)
+10. [Ciclos de vida (pedido e produto)](#10-ciclos-de-vida)
 11. [Modelo de dados (conceitual)](#11-modelo-de-dados-conceitual)
 12. [Telas envolvidas](#12-telas-envolvidas)
 13. [Mapa de navegação](#13-mapa-de-navegação)
@@ -97,6 +105,7 @@ flowchart LR
 flowchart TB
     subgraph Plataforma
         ADM[Administrador da Plataforma]
+        MOD[Moderador - análise de originalidade]
     end
     subgraph Comunidades
         OWN[Membro dono da comunidade]
@@ -115,6 +124,8 @@ flowchart TB
 
     ADM -->|aprova| Comunidades
     ADM -->|homologa| FORP
+    ADM -->|nomeia| MOD
+    MOD -->|aprova ou reprova produtos| Comunidades
     OWN -->|convida| MEM
     OWN -->|cadastra| FORC
     Comunidades -->|usam| FORP
@@ -128,6 +139,7 @@ flowchart TB
 |---|---|---|
 | **Cliente** | Pessoa que compra na loja | Navegar, montar carrinho, calcular frete, pagar, acompanhar pedido, **acompanhar comunidades** |
 | **Administrador da plataforma** | Mantenedores da Loja | Aprovar comunidades, homologar fornecedores globais, moderar produtos, mediar disputas, manter tabela de taxas |
+| **Moderador** | Pessoa nomeada pelo admin (mantenedor ou voluntário de confiança das comunidades) | Analisar originalidade de produtos e coleções, pedir autorização à comunidade citada, aprovar/reprovar com motivo, tratar denúncias. Nunca analisa produto da própria comunidade |
 | **Comunidade (lojista)** | Qualquer comunidade de tecnologia aprovada. Ex.: PHP Brasil, PHPeste, grupos de Python, JS, Java, dados, DevOps… | Cadastrar produtos, coleções, fornecedores e margens, ver vendas, financeiro e nº de seguidores |
 | **Membro da comunidade** | Pessoa com acesso ao painel da comunidade (N por comunidade) | Papéis: **Dono** (tudo, incluindo financeiro e membros) e **Colaborador** (produtos e pedidos) |
 | **Fornecedor** | Gráfica, fábrica de canecas, ateliê de mascotes/pelúcias etc. | Receber pedidos, atualizar status, informar rastreio, manter preço de custo e prazo de produção |
@@ -146,11 +158,11 @@ flowchart TB
 | **Proposta de valor** | Todos os produtos oficiais das comunidades de tecnologia do Brasil em um só lugar, com preço acessível e dinheiro revertido para a própria comunidade |
 | **Canais** | Site da Loja; divulgação nas comunidades (Telegram, Discord, redes sociais); QR code em eventos e meetups; links por comunidade (`/c/phpeste`); **e-mail de lançamento para seguidores** |
 | **Relacionamento** | Comunitário e transparente: página da comunidade mostrando para onde vai o dinheiro; **acompanhar comunidades**; notificações de pedido e de lançamentos por e-mail |
-| **Fontes de receita** | Margem da comunidade sobre o custo do fornecedor. *(Em aberto: pequena taxa da plataforma para cobrir infra; ver §14)* |
+| **Fontes de receita** | Comunidade: margem sobre o custo do fornecedor. Plataforma: **R$ 2,49 por saque** solicitado pela comunidade, para cobrir os custos |
 | **Recursos-chave** | Plataforma (código aberto?), integração GeffinPay (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
 | **Atividades-chave** | Manter a plataforma; homologar fornecedores; apoiar comunidades a subir produtos; mediar problemas de entrega |
 | **Parcerias-chave** | Fornecedores (gráficas, canecas, pelúcias); GeffinPay; Correios; organizações dos eventos |
-| **Estrutura de custos** | Hospedagem e domínio; taxas do gateway (por transação, ver §6); envio de e-mails (cresce com o nº de seguidores); tempo de voluntários; eventual contrato com os Correios |
+| **Estrutura de custos** | Cobertos pela tarifa de saque: hospedagem e domínio; taxas do gateway (por transação, ver §6); envio de e-mails (cresce com o nº de seguidores); tempo de voluntários; eventual contrato com os Correios |
 
 ---
 
@@ -164,8 +176,8 @@ A funcionalidade é pensada como **eventos de lançamento da comunidade**. Hoje 
 
 | Evento | Quando dispara | Conteúdo do e-mail |
 |---|---|---|
-| `produto_publicado` | Produto passa de rascunho para **publicado** (não dispara em edição de produto já publicado) | Foto, nome, preço, link do produto |
-| `colecao_publicada` | Coleção/edição é publicada (ex.: *PHPeste 2026*) | Banner, período de venda, tiragem, produtos da coleção |
+| `produto_publicado` | Produto é **aprovado na análise de originalidade** e publicado pela primeira vez (não dispara em edição de produto já publicado) | Foto, nome, preço, link do produto |
+| `colecao_publicada` | Coleção/edição é aprovada e publicada (ex.: *PHPeste 2026*) | Banner, período de venda, tiragem, produtos da coleção |
 | *futuro:* `pre_venda_aberta`, `produto_reposto`, `evento_anunciado`, `cupom_criado`… | Definido quando a funcionalidade existir | Modelo de e-mail próprio |
 
 ### Como funciona
@@ -194,7 +206,8 @@ flowchart LR
 
 ```
 Preço de venda do produto = Custo do fornecedor + Margem da comunidade
-Total do pedido           = Σ (Preço de venda × qtd) + Σ Frete por fornecedor
+Base do pedido            = Σ (Preço de venda × qtd) + Σ Frete por fornecedor
+Total cobrado do cliente  = Base do pedido + acréscimo de parcelamento (só em 2x–6x, se repassado)
 ```
 
 ### Tabela de taxas da GeffinPay
@@ -207,34 +220,68 @@ Total do pedido           = Σ (Preço de venda × qtd) + Σ Frete por fornecedo
 | **Crédito parcelado (2x a 6x)** | R$ 0,49 + 4,49% | Fixa + percentual sobre o total |
 
 - Pix e boleto têm **taxa fixa em centavos**, não importa o valor do pedido. Só o cartão de crédito tem parte percentual.
-- Parcelamento **máximo de 6x**. O parcelamento é **sem juros para o cliente**: a diferença de taxa é absorvida (ver regra abaixo).
+- Parcelamento **máximo de 6x**.
 - A taxa é cobrada **uma vez por pedido** (uma transação), mesmo com várias comunidades e fornecedores no carrinho.
 - A tabela fica **configurável no admin com data de vigência**, e cada pagamento guarda a taxa aplicada (*snapshot*). Se a GeffinPay mudar os preços, pedidos antigos não mudam.
 
-**Fórmulas** (arredondamento em centavos, meio para cima):
+### Duas escolhas da comunidade
+
+**1. Parcelamento: repassar ou assumir** *(configuração da comunidade, tela C10)*
+
+| Opção | Quem paga a taxa do parcelado (R$ 0,49 + 4,49%) | O cliente vê |
+|---|---|---|
+| **Repassar ao cliente** *(padrão)* | O cliente, como acréscimo no total | "6x de R$ 16,14 (total R$ 96,84)" |
+| **Assumir (sem juros)** | A comunidade (e o fornecedor, se houver acordo, ver abaixo) | "6x de R$ 15,33 sem juros" |
+
+**2. Taxa percentual do cartão: comunidade ou fornecedor** *(acordo por comunidade e fornecedor, tela C06)*
+
+A comunidade negocia com cada fornecedor quem paga a parte percentual do cartão sobre o valor dele (custo + frete):
+
+| Acordo | Efeito |
+|---|---|
+| **Comunidade absorve** *(padrão)* | O fornecedor recebe sempre custo + frete cheios. A comunidade paga toda a taxa |
+| **Fornecedor absorve** | O fornecedor paga o percentual do cartão sobre o valor dele (custo + frete). A comunidade paga a parte fixa (R$ 0,49) e o percentual sobre a margem |
+
+O acordo vale para **crédito à vista** e para **parcelado assumido pela comunidade**. Não se aplica a Pix e boleto (taxa fixa, sempre da comunidade) nem ao parcelado repassado (o cliente cobre a taxa inteira).
+
+### Fórmulas
+
+Arredondamento em centavos, meio para cima.
 
 ```
-Pix / Boleto         taxa = 2,49
-Crédito à vista      taxa = 0,49 + arred(total × 3,99%)
-Crédito 2x a 6x      taxa = 0,49 + arred(total × 4,49%)
+Pix / Boleto              taxa = 2,49
+
+Crédito à vista           taxa = 0,49 + arred(base × 3,99%)
+
+Crédito 2x–6x assumido    taxa = 0,49 + arred(base × 4,49%)
+
+Crédito 2x–6x repassado   total = arred( (base + 0,49) / (1 − 4,49%) )
+                          taxa  = 0,49 + arred(total × 4,49%)
+                          acréscimo = total − base   (fica = taxa; diferença de 1 centavo fica com a comunidade)
+
+Fornecedor absorve %      parte do fornecedor = arred(valor_fornecedor × percentual)
+                          parte da comunidade = taxa − parte do fornecedor
 ```
 
-### Regra de divisão proposta *(a validar)*
+- **Carrinho com comunidades que repassam e outras que assumem:** o acréscimo cobre só a parte da taxa das comunidades que repassam, pelo rateio da margem (RN20). Fórmula geral, com `r` = margem das comunidades que repassam ÷ margem total: `total = (base + r × 0,49) / (1 − r × 4,49%)`.
+- **Fornecedor que atende várias comunidades com acordos diferentes:** o valor do fornecedor considerado é o custo dos itens de cada comunidade mais o frete do sub-pedido rateado pelo custo dos itens.
+
+### Regra de divisão
 
 | Recebedor | Recebe |
 |---|---|
-| **Fornecedor** | Custo dos itens + frete cobrado (é ele quem posta) |
-| **Comunidade** | Margem dos itens − sua parte da taxa do gateway |
+| **Fornecedor** | Custo dos itens + frete (menos o % do cartão, só se tiver acordo "fornecedor absorve") |
+| **Comunidade** | Margem + acréscimo de parcelamento recebido − sua parte da taxa |
 | **GeffinPay** | Taxa da transação (tabela acima) |
-| **Plataforma** *(opcional)* | % fixa para manutenção, se aprovado pelas comunidades |
+| **Plataforma** | **R$ 2,49 por saque** solicitado pela comunidade (não cobra nada sobre as vendas) |
 
-> A proposta desconta a taxa do gateway da margem da comunidade para que o fornecedor receba **sempre o valor cheio** que informou. Assim o preço de custo fica previsível para ele.
->
-> ⚠️ No cartão, a parte percentual incide sobre o **total do pedido, incluindo o frete**. A comunidade paga a taxa sobre o valor que vai para o fornecedor também. Isso precisa ficar claro no simulador de margem (tela C04).
+**Monetização da plataforma: tarifa de saque.** O dinheiro das vendas fica como saldo da comunidade na subconta dela na GeffinPay. Sempre que a comunidade **solicita um saque** para a conta bancária, a plataforma cobra **R$ 2,49 fixos**, usados para pagar os custos dela (hospedagem, e-mails, domínio etc.). A plataforma não cobra nada nas vendas: a comunidade decide quando e quanto sacar, e sacar menos vezes com valores maiores fica mais barato.
 
-**Rateio entre comunidades:** quando o pedido tem itens de mais de uma comunidade, a taxa é dividida **proporcionalmente à margem** de cada uma. Os centavos que sobram do arredondamento vão para a comunidade com a maior margem, para a soma bater exatamente com a taxa.
+> Exemplo: saldo disponível de R$ 1.180,00 → saque de R$ 1.180,00 → a comunidade recebe **R$ 1.177,51** na conta, e a plataforma fica com R$ 2,49.
 
-### Exemplo 1 — um produto, uma comunidade
+**Rateio entre comunidades:** a parte da taxa das comunidades é dividida **proporcionalmente à margem** de cada uma. Os centavos que sobram do arredondamento vão para a comunidade com a maior margem, para a soma bater exatamente.
+
+### Exemplo 1: um produto, uma comunidade
 
 | Item | Valor |
 |---|---|
@@ -242,28 +289,33 @@ Crédito 2x a 6x      taxa = 0,49 + arred(total × 4,49%)
 | Margem da comunidade PHPeste | R$ 25,00 |
 | **Preço de venda** | **R$ 70,00** |
 | Frete PAC (cotação Correios) | R$ 22,00 |
-| **Total pago pelo cliente** | **R$ 92,00** |
+| **Base do pedido** | **R$ 92,00** |
 
-| Forma de pagamento | Taxa GeffinPay | Fornecedor | Comunidade | Soma |
+| Forma de pagamento | Cliente paga | Taxa GeffinPay | Fornecedor | Comunidade |
 |---|---|---|---|---|
-| Pix | R$ 2,49 | R$ 67,00 | **R$ 22,51** | R$ 92,00 ✅ |
-| Boleto | R$ 2,49 | R$ 67,00 | **R$ 22,51** | R$ 92,00 ✅ |
-| Crédito à vista | 0,49 + 3,67 = R$ 4,16 | R$ 67,00 | **R$ 20,84** | R$ 92,00 ✅ |
-| Crédito 2x–6x | 0,49 + 4,13 = R$ 4,62 | R$ 67,00 | **R$ 20,38** | R$ 92,00 ✅ |
+| Pix | R$ 92,00 | R$ 2,49 | R$ 67,00 | **R$ 22,51** |
+| Boleto | R$ 92,00 | R$ 2,49 | R$ 67,00 | **R$ 22,51** |
+| Crédito à vista (comunidade absorve) | R$ 92,00 | 0,49 + 3,67 = R$ 4,16 | R$ 67,00 | **R$ 20,84** |
+| Crédito à vista (fornecedor absorve %) | R$ 92,00 | R$ 4,16 (forn. 2,67 · com. 1,49) | R$ 64,33 | **R$ 23,51** |
+| Crédito 2x–6x **repassado** *(padrão)* | R$ 96,84 (6x R$ 16,14) | 0,49 + 4,35 = R$ 4,84 | R$ 67,00 | **R$ 25,00** |
+| Crédito 2x–6x assumido (comunidade absorve) | R$ 92,00 | 0,49 + 4,13 = R$ 4,62 | R$ 67,00 | **R$ 20,38** |
+| Crédito 2x–6x assumido (fornecedor absorve %) | R$ 92,00 | R$ 4,62 (forn. 3,01 · com. 1,61) | R$ 63,99 | **R$ 23,39** |
 
-> Em pedidos pequenos, Pix e boleto ficam mais baratos para a comunidade. Em pedidos maiores, a taxa fixa vale ainda mais a pena: num pedido de R$ 300, o Pix custa R$ 2,49 e o crédito à vista custa R$ 12,46. Vale incentivar o Pix na tela de pagamento.
+Em todas as linhas: cliente paga = taxa + fornecedor + comunidade ✅
 
-### Exemplo 2 — carrinho com duas comunidades e dois fornecedores
+> 💚 **Incentivo ao Pix:** no Pix a comunidade recebe R$ 22,51 e no crédito à vista recebe R$ 20,84. A loja mostra essa diferença ao cliente no carrinho e no checkout ("No Pix, a comunidade recebe R$ 1,67 a mais"). Quanto maior o pedido, maior a diferença: num pedido de R$ 300, o Pix custa R$ 2,49 e o crédito à vista custa R$ 12,46.
 
-Carrinho da tela L06: Camisa PHPeste (margem R$ 25) + Camisa PHP-SP (margem R$ 20) + mascote elePHPant PHPeste (margem R$ 40). Total R$ 307,00, sendo R$ 255,00 de produtos e R$ 52,00 de frete. Margens: **PHPeste R$ 65,00** e **PHP-SP R$ 20,00** (soma R$ 85,00).
+### Exemplo 2: carrinho com duas comunidades e dois fornecedores
 
-| Forma | Taxa total | PHPeste (65/85) | PHP-SP (20/85) | PHPeste recebe | PHP-SP recebe |
-|---|---|---|---|---|---|
-| Pix / Boleto | R$ 2,49 | R$ 1,90 | R$ 0,59 | R$ 63,10 | R$ 19,41 |
-| Crédito à vista | 0,49 + 12,25 = R$ 12,74 | R$ 9,74 | R$ 3,00 | R$ 55,26 | R$ 17,00 |
-| Crédito 2x–6x | 0,49 + 13,78 = R$ 14,27 | R$ 10,91 | R$ 3,36 | R$ 54,09 | R$ 16,64 |
+Carrinho da tela L06: Camisa PHPeste (margem R$ 25) + Camisa PHP-SP (margem R$ 20) + mascote elePHPant PHPeste (margem R$ 40). Base R$ 307,00, sendo R$ 255,00 de produtos e R$ 52,00 de frete. Margens: **PHPeste R$ 65,00** e **PHP-SP R$ 20,00** (soma R$ 85,00). As duas comunidades usam os padrões (repassam o parcelamento; comunidade absorve o % do cartão).
 
-Os fornecedores recebem o mesmo valor em qualquer forma de pagamento (custo + frete de cada envio).
+| Forma | Cliente paga | Taxa total | PHPeste paga (65/85) | PHP-SP paga (20/85) | PHPeste recebe | PHP-SP recebe |
+|---|---|---|---|---|---|---|
+| Pix / Boleto | R$ 307,00 | R$ 2,49 | R$ 1,90 | R$ 0,59 | R$ 63,10 | R$ 19,41 |
+| Crédito à vista | R$ 307,00 | 0,49 + 12,25 = R$ 12,74 | R$ 9,74 | R$ 3,00 | R$ 55,26 | R$ 17,00 |
+| Crédito 2x–6x repassado | R$ 321,95 | 0,49 + 14,46 = R$ 14,95 | coberto pelo acréscimo | coberto pelo acréscimo | R$ 65,00 | R$ 20,00 |
+
+Os fornecedores recebem o mesmo valor em todas as linhas (custo + frete de cada envio), porque nenhum acordo "fornecedor absorve" está ativo.
 
 ### Carrinho com várias comunidades e fornecedores
 
@@ -278,7 +330,7 @@ flowchart TB
     SP1 --> S3[Split: PHP-SP margem camisa]
     SP2 --> S4[Split: Ateliê custo+frete B]
     SP2 --> S5[Split: PHPeste margem mascote]
-    P --> S6[Split: GeffinPay taxa única do pedido<br/>descontada das comunidades]
+    P --> S6[Split: GeffinPay taxa única do pedido<br/>coberta pelo acréscimo, comunidades<br/>ou fornecedores conforme acordos]
 ```
 
 ---
@@ -305,6 +357,19 @@ flowchart TB
 - **RN12** — Produto pode pertencer a uma **Coleção/Edição** (ex.: *PHPeste 2026*) com data de início e fim de venda e **tiragem limitada** opcional.
 - **RN13** — Produtos de edição encerrada saem da vitrine, mas continuam no histórico.
 
+### Análise de originalidade (anti-plágio)
+- **RN32** — **Todo produto novo passa por análise humana** antes de ir para a vitrine. A comunidade envia para análise, e só um **moderador da plataforma** aprova a publicação.
+- **RN33** — O moderador verifica se o produto **faz menção ou referência a outra comunidade**: nome, sigla, logo, mascote customizado (ex.: o elePHPant da PHPPI ou da PHPSP), evento ou arte identificável. Se o produto claramente pertence a outra comunidade, é **reprovado**.
+- **RN33a** — **Mascote genérico da linguagem** (ex.: elePHPant sem customização) ou de projeto open source **não é aprovado automaticamente**. Todo produto assim passa pela **análise humana, caso a caso**, com as mesmas regras de originalidade.
+- **RN34** — Antes da análise humana, o sistema faz uma **pré-checagem automática**: procura nomes, siglas e slugs de outras comunidades e de eventos no título, na descrição e nas tags, e lista produtos parecidos já publicados. O resultado só ajuda o moderador, nunca aprova ou reprova sozinho.
+- **RN35** — **Exceção por autorização:** produto colaborativo ou com referência autorizada (ex.: camisa conjunta de dois meetups) só é aprovado com **autorização registrada da comunidade citada**, dada por um Dono dela na plataforma.
+- **RN36** — A reprovação sempre tem **motivo escrito**. A comunidade pode corrigir e reenviar, ou **contestar** uma vez (a contestação vai para outro moderador).
+- **RN37** — Em produto já publicado, mudanças em **nome, descrição, imagens ou arte** voltam para análise, e a versão anterior continua no ar até a aprovação. Mudança de preço, margem ou estoque não passa por análise.
+- **RN38** — **Coleções** também passam pela análise (nome, banner e descrição).
+- **RN39** — Qualquer comunidade pode **denunciar** um produto publicado que use sua identidade. A denúncia vai para a fila de moderação com prioridade, e o moderador pode tirar o produto da vitrine enquanto analisa.
+- **RN40** — Moderador **não analisa produto da própria comunidade** (conflito de interesse).
+- **RN41** — A notificação aos seguidores (RN27) só dispara quando o produto é **aprovado e publicado**.
+
 ### Pedido, frete e pagamento
 - **RN14** — Frete calculado **por sub-pedido** (CEP origem do fornecedor → CEP do cliente), usando peso e dimensões somados dos itens.
 - **RN15** — Prazo exibido ao cliente = prazo de produção do fornecedor + prazo dos Correios.
@@ -313,12 +378,15 @@ flowchart TB
 - **RN18** — Cancelamento antes da produção gera estorno total; depois da produção, segue a política da comunidade e o CDC (direito de arrependimento de 7 dias para compras online).
 
 ### Taxas e split
-- **RN19** — Taxas da GeffinPay: **Pix R$ 2,49**, **boleto R$ 2,49** (fixas), **crédito à vista R$ 0,49 + 3,99%**, **crédito 2x–6x R$ 0,49 + 4,49%**. Parcelamento máximo de 6x, sem juros para o cliente.
-- **RN20** — A taxa é cobrada uma vez por pedido e descontada das **comunidades**, rateada **proporcionalmente à margem** de cada uma; a sobra de centavos do arredondamento vai para a comunidade de maior margem.
-- **RN21** — O fornecedor recebe sempre **custo + frete**, sem desconto de taxa.
-- **RN22** — No checkout, formas de pagamento cuja taxa seria **maior que a soma das margens** do pedido não são oferecidas (ex.: pedido barato com frete alto pode não aceitar crédito parcelado).
-- **RN23** — Na tela de produto (C04), a comunidade vê o valor líquido da margem nas 4 formas de pagamento. O sistema **alerta** quando a margem líquida no crédito parcelado fica abaixo de um mínimo (sugestão: R$ 1,00).
-- **RN24** — A tabela de taxas é versionada com **data de vigência**; cada pagamento guarda a taxa aplicada.
+- **RN19** — Taxas da GeffinPay: **Pix R$ 2,49**, **boleto R$ 2,49** (fixas), **crédito à vista R$ 0,49 + 3,99%**, **crédito 2x–6x R$ 0,49 + 4,49%**. Parcelamento máximo de 6x.
+- **RN20** — A taxa é cobrada uma vez por pedido. A parte que cabe às **comunidades** é rateada **proporcionalmente à margem** de cada uma; a sobra de centavos do arredondamento vai para a comunidade de maior margem.
+- **RN21** — **Parcelamento (2x–6x):** por padrão, a **taxa inteira do parcelado (R$ 0,49 + 4,49%)** é **repassada ao cliente** como acréscimo no total, e não só a diferença em relação ao crédito à vista. A comunidade pode escolher **assumir** a taxa e oferecer parcelamento sem juros (configuração em C10).
+- **RN22** — **Taxa % do cartão:** por padrão a comunidade absorve e o fornecedor recebe custo + frete cheios. A comunidade pode negociar com cada fornecedor que ele **absorva o percentual do cartão sobre o valor dele** (custo + frete). O acordo vale para crédito à vista e parcelado assumido e é registrado por par comunidade–fornecedor (C06). Só vale depois que o fornecedor **aceitar** no painel dele.
+- **RN23** — No checkout, formas de pagamento em que a parte da taxa paga pelas comunidades seria **maior que a soma das margens** não são oferecidas. O parcelado repassado nunca cai nessa regra.
+- **RN24** — A loja mostra ao cliente, no carrinho e no checkout, **quanto a comunidade recebe a mais se ele pagar com Pix**.
+- **RN24a** — Na tela de produto (C04), a comunidade vê a margem líquida em cada forma de pagamento, conforme suas configurações. O sistema **alerta** quando a margem líquida fica abaixo de um mínimo (sugestão: R$ 1,00).
+- **RN24c** — **Tarifa de saque:** cada saque solicitado pela comunidade custa **R$ 2,49**, que vão para a plataforma. A tarifa é descontada do valor sacado. O valor do saque precisa ser **maior que R$ 2,49**. Só o **Dono** pode solicitar saque (RN04). A tarifa é configurável no admin, com vigência, e cada saque guarda a tarifa aplicada.
+- **RN24b** — A tabela de taxas é versionada com **data de vigência**. Cada pagamento guarda a taxa, o acréscimo e os acordos aplicados.
 
 ### Acompanhar comunidades
 - **RN25** — Cliente logado e com e-mail confirmado pode acompanhar **quantas comunidades quiser** e deixar de acompanhar a qualquer momento.
@@ -378,9 +446,12 @@ flowchart TD
     G --> H{Faz parte de edição/coleção?}
     H -- Sim --> I[Vincula coleção<br/>ex.: PHPeste 2026<br/>período e tiragem]
     H -- Não --> J
-    I --> J{Publicar agora?}
-    J -- Sim --> K[Produto visível na vitrine]
-    K --> K2[Evento produto_publicado<br/>notifica seguidores - ver 8.8]
+    I --> J{Enviar para análise agora?}
+    J -- Sim --> K[Status 'Em análise'<br/>análise de originalidade - ver 8.9]
+    K --> K1{Aprovado?}
+    K1 -- Sim --> K3[Produto visível na vitrine]
+    K3 --> K2[Evento produto_publicado<br/>notifica seguidores - ver 8.8]
+    K1 -- Não --> K4[Reprovado com motivo<br/>comunidade corrige e reenvia]
     J -- Não --> L[Salvo como rascunho]
 ```
 
@@ -398,7 +469,7 @@ flowchart TD
     G --> H[Cliente escolhe PAC / SEDEX por grupo]
     H --> I[Login ou cadastro rápido]
     I --> J[Endereço e dados pessoais]
-    J --> K[Escolhe pagamento<br/>Pix / Boleto / Crédito até 6x<br/>opções filtradas pela RN22]
+    J --> K[Escolhe pagamento<br/>Pix / Boleto / Crédito até 6x<br/>opções filtradas pela RN23<br/>destaque: quanto a comunidade ganha a mais no Pix]
     K --> L[GeffinPay processa com split]
     L --> M{Aprovado?}
     M -- Não --> N[Mostra erro e permite nova tentativa] --> K
@@ -481,6 +552,47 @@ flowchart TD
     L --> M[Painel da comunidade mostra<br/>e-mails enviados no lançamento]
 ```
 
+### 8.9 Análise de originalidade (anti-plágio)
+
+```mermaid
+flowchart TD
+    A([Comunidade envia produto ou coleção para análise]) --> B[Pré-checagem automática<br/>nomes, siglas, slugs de outras comunidades e eventos<br/>produtos parecidos já publicados]
+    B --> C[Entra na fila de moderação<br/>com o resultado da pré-checagem]
+    C --> D[Moderador de outra comunidade pega o item]
+    D --> E[Compara com produtos similares<br/>e com a identidade das comunidades citadas]
+    E --> F{Faz menção ou referência<br/>a outra comunidade?}
+    F -- Não --> G[Aprova]
+    F -- Sim --> H{Existe autorização registrada<br/>da comunidade citada?}
+    H -- Sim --> G
+    H -- Não --> I{Referência pode ser autorizada?<br/>ex.: produto colaborativo}
+    I -- Sim --> J[Pendente de autorização<br/>pedido enviado ao Dono da comunidade citada]
+    J --> K{Comunidade citada autoriza?}
+    K -- Sim --> G
+    K -- Não / sem resposta em N dias --> L
+    I -- Não --> L[Reprova com motivo escrito]
+    G --> M[Produto publicado<br/>seguidores notificados]
+    L --> N[E-mail para a comunidade com o motivo]
+    N --> O{Comunidade}
+    O -- Corrige --> A
+    O -- Contesta --> P[Outro moderador revisa] --> F
+    O -- Desiste --> Q([Rascunho arquivado])
+```
+
+### 8.10 Denúncia de uso indevido
+
+```mermaid
+flowchart TD
+    A([Membro da comunidade B vê produto da comunidade C<br/>usando a identidade de B]) --> B[Clica em 'Denunciar uso indevido'<br/>com motivo e evidências]
+    B --> C[Denúncia entra na fila com prioridade]
+    C --> D{Moderador: caso evidente?}
+    D -- Sim --> E[Tira o produto da vitrine enquanto analisa]
+    D -- Não --> F
+    E --> F[Analisa com as mesmas regras da 8.9]
+    F --> G{Procedente?}
+    G -- Sim --> H[Produto arquivado<br/>comunidade C avisada com motivo<br/>pedidos já pagos seguem até a entrega]
+    G -- Não --> I[Produto volta para a vitrine<br/>comunidade B avisada]
+```
+
 ---
 
 ## 9. Diagramas de sequência
@@ -523,7 +635,14 @@ sequenceDiagram
     Loja->>DB: Revalida preço, estoque/tiragem e frete
     Loja->>DB: Cria Pedido + Sub-pedidos (status: aguardando pagamento)
     Loja->>DB: Busca tabela de taxas vigente
+    Loja->>DB: Busca config de parcelamento das comunidades<br/>e acordos comunidade–fornecedor
     Loja->>Loja: Calcula taxa pela forma de pagamento<br/>(Pix/boleto 2,49 · crédito 0,49 + 3,99% ou 4,49%)
+    opt Crédito 2x–6x com comunidade que repassa
+        Loja->>Loja: Calcula acréscimo de parcelamento e novo total
+    end
+    opt Acordo "fornecedor absorve %"
+        Loja->>Loja: Desconta % do cartão do valor do fornecedor
+    end
     Loja->>Loja: Calcula split<br/>(fornecedores: custo+frete, comunidades: margem − taxa rateada)
     Loja->>GEF: Cria cobrança {valor, método, parcelas, splits[recebedor, valor]}
     GEF-->>Loja: ID da cobrança + dados (QR Pix / status cartão)
@@ -661,11 +780,11 @@ sequenceDiagram
     participant Mail as Serviço de e-mail
     actor Seg as Seguidores
 
-    Membro->>API: Publica produto / coleção
+    Note over Membro,API: Produto/coleção já aprovado na análise de originalidade (9.8)
     API->>DB: Status → publicado (primeira vez)
     API->>DB: Grava evento de lançamento no lote aberto da comunidade
     API->>Fila: Agenda "EnviarLote" para o fim da janela (se lote novo)
-    API-->>Membro: Publicado ✓
+    API-->>Membro: E-mail "Produto aprovado e publicado"
 
     Note over Fila: 30 min depois
     Fila->>DB: Fecha lote e carrega eventos
@@ -680,9 +799,82 @@ sequenceDiagram
     API->>DB: Remove seguidor ou desliga o tipo de evento
 ```
 
+### 9.8 Análise de originalidade
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Membro as Membro da comunidade C
+    participant API as Loja (back-end)
+    participant DB as Banco de dados
+    actor Mod as Moderador
+    actor DonoB as Dono da comunidade B (citada)
+    participant Mail as Serviço de e-mail
+
+    Membro->>API: Envia produto para análise
+    API->>DB: Produto → em_analise, cria análise (versão N)
+    API->>API: Pré-checagem: busca referências a outras comunidades<br/>e produtos similares
+    API->>DB: Salva resultado da pré-checagem
+    API-->>Membro: "Enviado para análise"
+
+    Mod->>API: Abre fila de moderação
+    API->>DB: Itens pendentes (exceto da comunidade do moderador)
+    API-->>Mod: Produto + pré-checagem + similares lado a lado
+
+    alt Sem referência a outra comunidade
+        Mod->>API: Aprova
+    else Referência à comunidade B, sem autorização
+        Mod->>API: Solicita autorização à comunidade B
+        API->>Mail: E-mail para o Dono de B
+        Mail-->>DonoB: "Comunidade C quer vender produto que cita B"
+        alt B autoriza
+            DonoB->>API: Autoriza
+            API->>DB: Registra autorização
+            Mod->>API: Aprova
+        else B recusa ou não responde no prazo
+            Mod->>API: Reprova com motivo
+        end
+    else Plágio evidente
+        Mod->>API: Reprova com motivo
+    end
+
+    API->>DB: Atualiza análise e status do produto
+    API->>Mail: Resultado para a comunidade C
+    Mail-->>Membro: "Aprovado e publicado" ou "Reprovado: motivo"
+    opt Aprovado
+        API->>API: Dispara produto_publicado (9.7)
+    end
+```
+
+### 9.9 Saque da comunidade
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dono as Dono da comunidade
+    participant API as Loja (back-end)
+    participant DB as Banco de dados
+    participant GEF as GeffinPay
+
+    Dono->>API: Solicita saque de R$ 1.180,00
+    API->>API: Verifica papel Dono e valor > R$ 2,49
+    API->>GEF: Consulta saldo disponível da subconta
+    GEF-->>API: R$ 1.180,00 disponível
+    API->>DB: Cria saque (valor 1.180,00 · tarifa 2,49 · líquido 1.177,51)
+    API->>GEF: Transfere R$ 2,49 da subconta da comunidade para a conta da plataforma
+    API->>GEF: Solicita saque de R$ 1.177,51 para a conta bancária da comunidade
+    GEF-->>API: Saque em processamento
+    API-->>Dono: "Saque solicitado: R$ 1.177,51"
+    GEF->>API: Webhook: saque pago
+    API->>DB: Saque → pago
+    API-->>Dono: E-mail de confirmação do saque
+```
+
 ---
 
-## 10. Ciclo de vida do pedido
+## 10. Ciclos de vida
+
+### 10.1 Pedido
 
 Status aplicado a cada **sub-pedido** (um por fornecedor). O pedido geral mostra o status agregado.
 
@@ -708,6 +900,28 @@ stateDiagram-v2
     Expirado --> [*]
 ```
 
+### 10.2 Produto
+
+```mermaid
+stateDiagram-v2
+    [*] --> Rascunho
+    Rascunho --> EmAnalise: enviar para análise
+    EmAnalise --> AguardandoAutorizacao: cita outra comunidade
+    AguardandoAutorizacao --> EmAnalise: autorização respondida
+    EmAnalise --> Publicado: aprovado
+    EmAnalise --> Reprovado: reprovado com motivo
+    Reprovado --> Rascunho: corrigir
+    Reprovado --> EmAnalise: contestar (1 vez)
+    Publicado --> EmAnalise: alteração de nome/descrição/arte<br/>(versão anterior segue no ar)
+    Publicado --> RevisaoCusto: fornecedor mudou custo
+    RevisaoCusto --> Publicado: comunidade revisa margem
+    Publicado --> Suspenso: denúncia evidente
+    Suspenso --> Publicado: denúncia improcedente
+    Suspenso --> Arquivado: denúncia procedente
+    Publicado --> Arquivado: comunidade retira / coleção encerrada
+    Arquivado --> [*]
+```
+
 ---
 
 ## 11. Modelo de dados (conceitual)
@@ -718,6 +932,12 @@ erDiagram
     COMUNIDADE ||--o{ MEMBRO_COMUNIDADE : "tem"
     COMUNIDADE ||--o{ PRODUTO : "vende"
     COMUNIDADE ||--o{ COMUNIDADE_FORNECEDOR : "usa"
+    PRODUTO ||--o{ ANALISE_PRODUTO : "passa por"
+    COLECAO ||--o{ ANALISE_PRODUTO : "passa por"
+    ANALISE_PRODUTO }o--o{ AUTORIZACAO_REFERENCIA : "considera"
+    COMUNIDADE ||--o{ AUTORIZACAO_REFERENCIA : "autoriza outra"
+    COMUNIDADE ||--o{ DENUNCIA : "denuncia"
+    PRODUTO ||--o{ DENUNCIA : "denunciado em"
     FORNECEDOR ||--o{ COMUNIDADE_FORNECEDOR : "atende"
     FORNECEDOR ||--o{ ITEM_FORNECEDOR : "oferece"
     ITEM_FORNECEDOR ||--o{ VARIACAO_ITEM : "tem"
@@ -732,6 +952,7 @@ erDiagram
     PEDIDO ||--|| PAGAMENTO : "pago por"
     PAGAMENTO ||--|{ SPLIT : "dividido em"
     PAGAMENTO }o--|| TABELA_TAXA : "usa taxa vigente"
+    COMUNIDADE ||--o{ SAQUE : "solicita"
     CLIENTE ||--o{ SEGUIDOR : "acompanha"
     COMUNIDADE ||--o{ SEGUIDOR : "é acompanhada"
     COMUNIDADE ||--o{ LOTE_LANCAMENTO : "gera"
@@ -744,8 +965,38 @@ erDiagram
         string slug
         string regiao
         int total_seguidores
+        string parcelamento "repassar|assumir"
         string status "pendente|aprovada|suspensa"
         string geffinpay_recebedor_id
+    }
+    COMUNIDADE_FORNECEDOR {
+        uuid comunidade_id
+        uuid fornecedor_id
+        string taxa_cartao_pct "comunidade|fornecedor"
+        datetime acordo_aceito_em "aceite do fornecedor"
+    }
+    ANALISE_PRODUTO {
+        uuid id
+        string alvo "produto|colecao"
+        int versao
+        json precheck "referências encontradas"
+        uuid moderador_id
+        string resultado "pendente|aprovado|reprovado"
+        string motivo
+        boolean contestada
+    }
+    AUTORIZACAO_REFERENCIA {
+        uuid id
+        uuid comunidade_autorizante_id
+        uuid comunidade_autorizada_id
+        uuid produto_id
+        uuid dono_que_autorizou_id
+        datetime concedida_em
+    }
+    DENUNCIA {
+        uuid id
+        string motivo
+        string status "aberta|procedente|improcedente"
     }
     MEMBRO_COMUNIDADE {
         uuid usuario_id
@@ -779,7 +1030,7 @@ erDiagram
         string nome
         string tipo_margem "fixo|percentual"
         decimal margem
-        string status "rascunho|publicado|revisao|arquivado"
+        string status "rascunho|em_analise|reprovado|publicado|revisao_custo|arquivado"
     }
     COLECAO {
         uuid id
@@ -811,6 +1062,7 @@ erDiagram
         string geffinpay_cobranca_id
         string metodo "pix|boleto|credito"
         int parcelas "1 a 6"
+        decimal acrescimo_parcelamento "0 se sem juros"
         decimal taxa_fixa "snapshot"
         decimal taxa_percentual "snapshot"
         decimal taxa_total
@@ -846,6 +1098,16 @@ erDiagram
         uuid id
         string nome "PHP, Python, Dados..."
     }
+    SAQUE {
+        uuid id
+        uuid comunidade_id
+        uuid solicitado_por "Dono"
+        decimal valor
+        decimal tarifa_plataforma "2,49 snapshot"
+        decimal valor_liquido
+        string status "solicitado|processando|pago|falhou"
+        datetime solicitado_em
+    }
     SPLIT {
         uuid id
         string recebedor_tipo "fornecedor|comunidade|gateway|plataforma"
@@ -869,25 +1131,26 @@ erDiagram
 | L03 | Loja | Listagem / busca | Cliente | Filtros por tecnologia, região, comunidade, categoria, coleção, preço |
 | L03b | Loja | Diretório de comunidades | Cliente | Todas as comunidades, filtro por tecnologia e região, Acompanhar direto no card |
 | L04 | Loja | Página de coleção/edição | Cliente | Banner do evento, contagem regressiva, tiragem restante |
-| L05 | Loja | Detalhe do produto | Cliente | Fotos, variações, preço, simulador de frete, prazo, "quanto vai para a comunidade", Acompanhar comunidade |
+| L05 | Loja | Detalhe do produto | Cliente | Fotos, variações, preço, simulador de frete, prazo, "quanto vai para a comunidade", Acompanhar comunidade, link "Denunciar uso indevido" (visível para membros de comunidades) |
 | L06 | Loja | Carrinho | Cliente | Itens agrupados por envio, CEP, escolha de frete por grupo |
 | L07 | Loja | Checkout — identificação/endereço | Cliente | Login/cadastro rápido, endereço (autocompletar via CEP) |
-| L08 | Loja | Checkout — pagamento | Cliente | Pix, boleto, crédito 1x a 6x sem juros (filtrado pela RN22); quanto as comunidades recebem em cada opção; resumo |
+| L08 | Loja | Checkout — pagamento | Cliente | Pix, boleto, crédito 1x a 6x com acréscimo (ou sem juros, se a comunidade assumir), filtrado pela RN23; quanto as comunidades recebem em cada opção; resumo |
 | L09 | Loja | Confirmação | Cliente | Número do pedido, QR Pix, próximos passos |
 | L10 | Loja | Minha conta — pedidos | Cliente | Lista, status por envio, rastreio, cancelar/devolver |
 | L11 | Loja | Minha conta — comunidades acompanhadas | Cliente | Lista de comunidades, tipos de lançamento por comunidade, deixar de acompanhar, pausar todos os e-mails |
 | L12 | Loja | Descadastro (página do link do e-mail) | Cliente | Confirmação sem login: deixar esta comunidade ou todos os lançamentos |
 | C01 | Painel Comunidade | Onboarding / cadastro | Membro | Dados da comunidade, status de aprovação, subconta GeffinPay |
 | C02 | Painel Comunidade | Dashboard | Membro | Vendas do período, pedidos pendentes, **nº de seguidores**, alertas (custo alterado, atraso, margem baixa) |
-| C03 | Painel Comunidade | Produtos (lista) | Membro | Status, preço, margem, fornecedor |
+| C03 | Painel Comunidade | Produtos (lista) | Membro | Status (rascunho, em análise, aguardando autorização, reprovado, publicado), preço, margem, fornecedor, motivo de reprovação |
 | C04 | Painel Comunidade | Produto (form) | Membro | Dados, fornecedor, variações, margem, margem líquida por forma de pagamento, aviso de que publicar notifica os seguidores |
 | C05 | Painel Comunidade | Coleções / edições | Membro | Período, tiragem, produtos vinculados, publicar coleção (notifica seguidores) |
 | C05b | Painel Comunidade | Lançamentos | Membro | Histórico de lotes de lançamento, e-mails enviados por lote |
-| C06 | Painel Comunidade | Fornecedores | Membro | Da plataforma (catálogo) e próprios; convidar fornecedor |
+| C06 | Painel Comunidade | Fornecedores | Membro | Da plataforma (catálogo) e próprios; convidar fornecedor; **acordo de taxa % do cartão** (comunidade ou fornecedor absorve) e status do aceite |
 | C07 | Painel Comunidade | Pedidos | Membro | Pedidos com itens da comunidade, status, rastreio |
-| C08 | Painel Comunidade | Financeiro | Dono | Recebido, a receber, estornos, extrato por pedido com forma de pagamento e taxa |
+| C08 | Painel Comunidade | Financeiro | Dono | Saldo disponível, a receber, estornos, extrato por pedido com forma de pagamento e taxa, **solicitar saque** (mostra a tarifa de R$ 2,49 e o valor líquido), histórico de saques |
 | C09 | Painel Comunidade | Membros | Dono | Convidar, papéis, remover |
-| C10 | Painel Comunidade | Configurações | Dono | Perfil público, tecnologias e região, dados bancários (GeffinPay), política de troca |
+| C10 | Painel Comunidade | Configurações | Dono | Perfil público, tecnologias e região, dados bancários (GeffinPay), política de troca, **parcelamento: repassar ao cliente (padrão) ou assumir** |
+| C11 | Painel Comunidade | Autorizações e denúncias | Dono | Pedidos de outras comunidades para usar referência à sua (autorizar/recusar), autorizações concedidas, denúncias feitas e seus resultados |
 | F01 | Painel Fornecedor | Onboarding | Fornecedor | Aceitar convite, dados, CEP origem, subconta GeffinPay |
 | F02 | Painel Fornecedor | Dashboard | Fornecedor | Novos pedidos, em produção, atrasados |
 | F03 | Painel Fornecedor | Catálogo de itens | Fornecedor | Itens, variações, custo, peso/dimensões, prazo de produção |
@@ -900,6 +1163,9 @@ erDiagram
 | A04 | Admin | Pedidos e disputas | Admin | Busca global, mediação, estornos |
 | A05 | Admin | Configurações | Admin | **Tabela de taxas GeffinPay com vigência**, janela de agrupamento de lançamentos, prazos (RN17), integrações |
 | A06 | Admin | Tecnologias | Admin | Cadastro de tecnologias/temas usados nos filtros |
+| A07 | Moderação | Fila de análise | Moderador | Produtos/coleções pendentes, denúncias (prioridade), filtros, tempo na fila |
+| A08 | Moderação | Análise do produto | Moderador | Produto enviado × produtos similares lado a lado, alertas da pré-checagem, histórico de versões, aprovar / reprovar com motivo / pedir autorização |
+| A09 | Admin | Moderadores | Admin | Nomear moderadores, comunidade de cada um (para evitar conflito), volume analisado |
 | E01 | E-mail | Pedido confirmado | Cliente | |
 | E02 | E-mail | Novo pedido | Fornecedor | |
 | E03 | E-mail | Pedido enviado (rastreio) | Cliente | |
@@ -909,6 +1175,10 @@ erDiagram
 | E07 | E-mail | Alerta de atraso | Comunidade, Admin | |
 | E08 | E-mail | Lançamento da comunidade (produto e/ou coleção, agrupado) | Seguidor | |
 | E09 | E-mail | Confirmação de e-mail (necessário para acompanhar) | Cliente | |
+| E10 | E-mail | Resultado da análise (aprovado e publicado / reprovado com motivo) | Comunidade | |
+| E11 | E-mail | Pedido de autorização de referência | Dono da comunidade citada | |
+| E12 | E-mail | Acordo de taxa do cartão para aceitar | Fornecedor | |
+| E13 | E-mail | Resultado de denúncia | Comunidade denunciante e denunciada | |
 
 ### 12.2 Wireframes de baixa fidelidade
 
@@ -972,7 +1242,7 @@ erDiagram
 │ │                  │  por Comunidade PHPeste [＋Acompanhar] │
 │ │      [foto]      │                                       │
 │ │                  │  R$ 70,00                             │
-│ └──────────────────┘  💚 até R$ 22,51 apoiam a comunidade  │
+│ └──────────────────┘  💚 até R$ 25,00 apoiam a comunidade  │
 │ [▫][▫][▫]                                                  │
 │                       Tamanho: (P) (M) (G) (GG)            │
 │                       Qtd: [- 1 +]                         │
@@ -1010,18 +1280,53 @@ erDiagram
 **L08 — Checkout: pagamento**
 ```
 ┌────────────────────────────────────────────────────────────┐
-│ Pagamento                                Total R$ 307,00   │
+│ Pagamento                                 Base R$ 307,00   │
 ├────────────────────────────────────────────────────────────┤
-│ (•) Pix                                                    │
+│ (•) Pix · R$ 307,00                                        │
 │     💚 comunidades recebem R$ 82,51                        │
-│ ( ) Boleto (compensa em até 3 dias úteis)                  │
+│ ( ) Boleto · R$ 307,00 (compensa em até 3 dias úteis)      │
 │     💚 comunidades recebem R$ 82,51                        │
-│ ( ) Cartão de crédito  [1x de R$ 307,00 sem juros ▾]       │
-│     até 6x de R$ 51,17 sem juros                           │
-│     💚 comunidades recebem R$ 72,26 (1x) / R$ 70,73 (2–6x) │
+│ ( ) Cartão de crédito                                      │
+│     [1x de R$ 307,00                              ▾]       │
+│      ├ 1x de R$ 307,00                                     │
+│      ├ 2x de R$ 160,98  (total R$ 321,95)                  │
+│      ├ ...                                                 │
+│      └ 6x de R$ 53,66   (total R$ 321,95)                  │
+│     💚 comunidades recebem R$ 72,26 à vista                │
 │                                                            │
-│ 💡 No Pix, as comunidades recebem R$ 10,25 a mais          │
+│ ┌────────────────────────────────────────────────────────┐ │
+│ │ 💡 Pagando no Pix, as comunidades recebem R$ 10,25 a   │ │
+│ │    mais do que no cartão à vista.                      │ │
+│ └────────────────────────────────────────────────────────┘ │
 │                                   [ Pagar R$ 307,00 → ]    │
+└────────────────────────────────────────────────────────────┘
+```
+> No parcelado, o total mostrado já tem o acréscimo, porque as comunidades deste pedido repassam a taxa (padrão). Se todas assumissem, apareceria "6x de R$ 51,17 sem juros".
+
+**A08 — Análise de originalidade (moderação)**
+```
+┌────────────────────────────────────────────────────────────┐
+│ Moderação › Fila (12) › Análise #482     ⏱ 1 dia na fila   │
+├────────────────────────────────────────────────────────────┤
+│ Enviado por: Comunidade PHP-XYZ  · versão 1                │
+│                                                            │
+│  Produto enviado            │  Similares já publicados     │
+│  ┌──────────────┐           │  ┌──────────────┐            │
+│  │ [foto]       │           │  │ [foto]       │ PHPPI      │
+│  │ elePHPant    │           │  │ elePHPant    │ 92% simil. │
+│  │ caju         │           │  │ PHPPI        │            │
+│  └──────────────┘           │  └──────────────┘            │
+│  "elePHPant do Piauí..."    │  ┌──────────────┐ PHPSP      │
+│                             │  │ [foto]       │ 41% simil. │
+│                             │  └──────────────┘            │
+│                                                            │
+│ ⚠ Pré-checagem: descrição cita "Piauí" e "PHPPI"           │
+│   (comunidade PHPPI) · sem autorização registrada          │
+│                                                            │
+│ Motivo (obrigatório para reprovar):                        │
+│ [____________________________________________________]     │
+│                                                            │
+│ [Aprovar]  [Pedir autorização à PHPPI]  [Reprovar]         │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -1084,11 +1389,16 @@ erDiagram
 │           │  Pix ............ taxa 2,49 → R$ 22,51         │
 │           │  Boleto ......... taxa 2,49 → R$ 22,51         │
 │           │  Crédito 1x ..... taxa 3,28 → R$ 21,72         │
-│           │  Crédito 2x–6x .. taxa 3,63 → R$ 21,37         │
+│           │  Crédito 2x–6x .. repassado ao cliente → 25,00 │
+│           │  Config: parcelamento repassado · taxa % paga  │
+│           │  pela comunidade (acordo com Gráfica X)        │
 │           │  ⚠ No crédito, o frete também entra na taxa %  │
 │           │                                                │
-│           │ 🔔 Publicar avisa 1.284 seguidores por e-mail  │
-│           │ [Salvar rascunho]  [Publicar]                  │
+│           │ 🔍 Produto passa por análise de originalidade  │
+│           │    antes de publicar. Não use nome, logo ou    │
+│           │    mascote de outra comunidade sem autorização.│
+│           │ 🔔 Ao ser aprovado, avisa 1.284 seguidores     │
+│           │ [Salvar rascunho]  [Enviar para análise]       │
 └───────────┴────────────────────────────────────────────────┘
 ```
 
@@ -1098,16 +1408,23 @@ erDiagram
 │ PHPeste ▾ │ Financeiro                   Período: [Set/26▾]│
 ├───────────┼────────────────────────────────────────────────┤
 │           │ ┌──────────┐ ┌──────────┐ ┌──────────┐         │
-│           │ │Recebido  │ │A receber │ │Estornos  │         │
-│           │ │R$ 3.420  │ │R$ 1.180  │ │R$ 70     │         │
+│           │ │Disponível│ │A receber │ │Estornos  │         │
+│           │ │R$ 1.180  │ │R$ 3.420  │ │R$ 70     │         │
 │           │ └──────────┘ └──────────┘ └──────────┘         │
+│           │ [ Solicitar saque ]                            │
+│           │  Saque: [1.180,00]  Tarifa: R$ 2,49            │
+│           │  Você recebe: R$ 1.177,51 na conta cadastrada  │
 │           │                                                │
 │           │ Pedido│Forma  │Bruto │Taxa  │Líquido│ St     │
 │           │ #1001 │Créd 1x│ 25,00│ 4,16 │ 20,84 │ ✅     │
 │           │ #1002 │Pix    │ 50,00│ 2,49 │ 47,51 │ ✅     │
-│           │ #1003 │Créd 3x│ 65,00│10,91 │ 54,09 │ ⏳     │
+│           │ #1003 │Créd 3x│ 65,00│ 0,00*│ 65,00 │ ⏳     │
 │           │ ...                                            │
 │           │ Taxa = parte da comunidade na taxa do pedido   │
+│           │ * parcelado repassado: taxa paga pelo cliente  │
+│           │                                                │
+│           │ Saques   │ Data  │ Valor    │ Tarifa │ Líquido  │
+│           │          │ 01/09 │ 2.000,00 │ 2,49   │ 1.997,51 │
 │           │                              [Exportar CSV]    │
 └───────────┴────────────────────────────────────────────────┘
 ```
@@ -1167,7 +1484,8 @@ flowchart LR
         C02 --> C07[Pedidos]
         C02 --> C08[Financeiro]
         C02 --> C09[Membros]
-        C02 --> C10[Config]
+        C02 --> C10[Config / Parcelamento]
+        C02 --> C11[Autorizações e denúncias]
     end
 
     subgraph Painel Fornecedor
@@ -1182,6 +1500,8 @@ flowchart LR
         A01 --> A04[Pedidos/Disputas]
         A01 --> A05[Config / Taxas]
         A01 --> A06[Tecnologias]
+        A01 --> A09[Moderadores]
+        A07[Fila de análise] --> A08[Análise do produto]
     end
 ```
 
@@ -1191,9 +1511,9 @@ flowchart LR
 
 | # | Tema | Pergunta / risco | Sugestão inicial |
 |---|---|---|---|
-| Q1 | **Taxa do gateway** | Proposta: comunidades absorvem, rateado pela margem (RN20). A comunidade aceita pagar a taxa % do cartão sobre o frete? Ou repassar ao cliente um acréscimo no parcelado? | Validar com comunidades piloto; alternativa é oferecer parcelado só acima de um valor mínimo |
-| Q2 | **Sustentabilidade da plataforma** | Quem paga hospedagem e manutenção? | Taxa pequena (ex.: 1–3%) ou apoio/patrocínio; decidir com a comunidade |
-| Q3 | **GeffinPay** | Suporta split com N recebedores, estorno parcial com reversão de split, subcontas para PF e parcelamento sem juros com taxa de 4,49% para 2x–6x? Estorno devolve a taxa? Prazo de recebimento (D+?) por forma de pagamento? | Validar a API antes de fechar a arquitetura |
+| Q1 | **Taxa do gateway** | ✅ Decidido: parcelado repassado ao cliente por padrão (a comunidade pode assumir); taxa % do cartão negociável com o fornecedor; resto rateado pela margem | — |
+| Q2 | **Sustentabilidade da plataforma** | ✅ Decidido: tarifa de R$ 2,49 por saque da comunidade (RN24c). Acompanhar se a receita cobre os custos, principalmente os de e-mail | — |
+| Q3 | **GeffinPay** | Permite cobrar a tarifa de saque da plataforma (transferência entre subcontas ou taxa no saque)? Suporta split com N recebedores, estorno parcial com reversão de split, subcontas para PF e repasse da taxa do parcelado ao cliente (acréscimo) e desconto de taxa em recebedor específico (fornecedor que absorve %)? Estorno devolve a taxa? Prazo de recebimento (D+?) por forma de pagamento? | Validar a API antes de fechar a arquitetura |
 | Q4 | **API dos Correios** | A API oficial (CWS) exige contrato; cada fornecedor tem o seu? | Cotação com contrato da plataforma ou dos fornecedores; avaliar agregadores (Melhor Envio etc.) como alternativa |
 | Q5 | **Responsabilidade legal** | Quem emite nota fiscal? Comunidades sem CNPJ podem vender? | Fornecedor emite NF da venda do produto; comunidade recebe a margem como intermediação/doação. **Validar com contador** |
 | Q6 | **Chargeback** | Quem arca com contestação de cartão? | Definir regra no termo de uso; possível reserva/retensão da comunidade |
@@ -1205,7 +1525,11 @@ flowchart LR
 | Q12 | **Quem é comunidade?** | Com o escopo aberto a qualquer stack, como evitar empresas ou perfis se passando por comunidade? | Critérios da RN01, aprovação manual e selo "comunidade verificada" |
 | Q13 | **Custo e reputação de e-mail** | Comunidades grandes = milhares de e-mails por lançamento; risco de cair em spam | Agrupamento (RN28), descadastro 1 clique, domínio com SPF/DKIM/DMARC, provedor transacional; acompanhar custo por mil envios |
 | Q14 | **Abuso de lançamentos** | Comunidade publica e despublica para "reenviar" e-mail | RN27 (só a primeira publicação notifica) + limite de lotes por dia por comunidade |
-| Q15 | **Pedido com taxa maior que a margem** | Pedido barato com frete caro no cartão | RN22 esconde a opção; avaliar margem mínima por produto |
+| Q15 | **Pedido com taxa maior que a margem** | Pedido barato com frete caro no cartão à vista | RN23 esconde a opção; avaliar margem mínima por produto |
+| Q16 | **Gargalo na moderação** | Análise humana de todo produto novo pode atrasar lançamentos (ex.: coleção de evento) | SLA-alvo (ex.: 2 dias úteis), vários moderadores voluntários, prioridade para coleções com data de início próxima |
+| Q17 | **Critério subjetivo** | "Faz referência a outra comunidade" pode gerar divergência (ex.: referência regional, mascote genérico da linguagem) | Guia público de originalidade com exemplos; contestação por outro moderador (RN36) |
+| Q18 | **Mascote oficial da linguagem** | ✅ Decidido: produto com mascote genérico (ex.: elePHPant sem customização) passa sempre por análise humana, caso a caso (RN33a) | — |
+| Q19 | **Aceite do fornecedor** | Fornecedor não aceita o acordo de taxa % | Acordo só vale após aceite (RN22); até lá, a comunidade absorve |
 
 ---
 
@@ -1221,8 +1545,8 @@ flowchart LR
 | Fase | Escopo |
 |---|---|
 | **0 — Validação** | Apresentar este documento às comunidades; responder Q1–Q5 e Q12; conversar com 2–3 fornecedores e 3–5 comunidades piloto, incluindo ao menos uma fora do PHP (ex.: PHPeste, PHP BR + uma de outra stack) |
-| **1 — MVP** | Loja (L01–L10), painel comunidade básico (produtos, pedidos, financeiro), painel fornecedor (pedidos + rastreio), split GeffinPay com as 4 formas de pagamento e tabela de taxas, frete Correios, e-mails E01–E03. **Acompanhar comunidade simples** (seguir/deixar, e-mail E08 agrupado, descadastro). Fornecedores cadastrados manualmente pelo admin |
-| **2 — Escala** | Autoatendimento de comunidades e fornecedores, múltiplos membros e papéis, diretório por tecnologia/região, coleções/edições com tiragem, estorno pelo painel, rastreio automático, preferências por tipo de lançamento (L11), histórico de lançamentos (C05b) |
+| **1 — MVP** | Loja (L01–L10), painel comunidade básico (produtos, pedidos, financeiro), painel fornecedor (pedidos + rastreio), split GeffinPay com as 4 formas de pagamento, tabela de taxas, parcelamento repassado/assumido e destaque do Pix, frete Correios, e-mails E01–E03. **Análise de originalidade manual** (fila A07/A08, aprovar/reprovar com motivo). **Acompanhar comunidade simples** (seguir/deixar, e-mail E08 agrupado, descadastro). Fornecedores cadastrados manualmente pelo admin |
+| **2 — Escala** | Autoatendimento de comunidades e fornecedores, múltiplos membros e papéis, diretório por tecnologia/região, coleções/edições com tiragem, estorno pelo painel, rastreio automático, preferências por tipo de lançamento (L11), histórico de lançamentos (C05b), acordo de taxa % com fornecedor (C06), pré-checagem automática de referências, autorizações e denúncias (C11) |
 | **3 — Extras** | Avaliações, cupons, pré-venda de edições, kits (camisa + caneca + mascote), novos eventos de lançamento (pré-venda, reposição, evento anunciado), relatório público de transparência por comunidade |
 
 ---
