@@ -32,7 +32,7 @@ flowchart LR
     CLI(("🙋 CLIENTE"))
     GEF["💳 GEFFINPAY<br/>divide o pagamento<br/>(split)"]
 
-    FOR -- "1 · oferece produtos<br/>com preço de custo" --> COM
+    FOR -- "1 · oferece produtos com preço<br/>negociado com a comunidade<br/>(fornecedor global: já negociado)" --> COM
     COM -- "2 · publica o produto<br/>custo + sua margem" --> LOJA
     CLI -- "3 · compra e paga" --> LOJA
     LOJA -- "4 · cobra" --> GEF
@@ -45,7 +45,7 @@ flowchart LR
 | Quem | O que faz | O que ganha |
 |---|---|---|
 | 🏷️ **Comunidade** | Escolhe o fornecedor, cria o produto (camisa, caneca, mascote, item de evento) e define a margem | A **margem** de cada venda, para financiar meetups e eventos |
-| 🏭 **Fornecedor** | Produz, embala e envia **direto ao cliente**, informando o rastreio | O **custo do produto + frete** |
+| 🏭 **Fornecedor** | Oferece o produto pelo preço negociado com a comunidade que o cadastra (no fornecedor global da plataforma, esse preço já vem negociado). Produz, embala e envia **direto ao cliente**, informando o rastreio | O **custo do produto + frete** |
 | 🙋 **Cliente** | Compra de várias comunidades num só carrinho e acompanha as que gosta | Produto oficial e a certeza de que ajuda a comunidade |
 | 🛒 **Plataforma** | Mantém a loja, aprova comunidades e analisa se o produto é original | **R$ 2,49 por saque** de comunidade ou fornecedor (nada sobre as vendas) |
 
