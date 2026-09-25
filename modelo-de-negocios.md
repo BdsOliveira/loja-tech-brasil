@@ -6,7 +6,7 @@
 
 **Mudanças da v0.3**
 - Biblioteca de UI definida: **DaisyUI**, usando a skill `npx -y skills add saadeghi/daisyui` (§12).
-- Monetização da plataforma: **R$ 2,49 por saque** solicitado pela comunidade (§6, RN24c, §9.9).
+- Monetização da plataforma: **R$ 2,49 por saque** solicitado por comunidade ou fornecedor (§6, RN24c, §9.9).
 - Parcelamento: por padrão a taxa do parcelado é **repassada ao cliente**; a comunidade pode optar por assumir (sem juros) (§6, RN21).
 - Taxa % do cartão pode ser **absorvida pelo fornecedor** mediante acordo com a comunidade (§6, RN22).
 - Destaque para o cliente de **quanto a comunidade recebe a mais no Pix** (RN24).
@@ -159,7 +159,7 @@ flowchart TB
 | **Proposta de valor** | Todos os produtos oficiais das comunidades de tecnologia do Brasil em um só lugar, com preço acessível e dinheiro revertido para a própria comunidade |
 | **Canais** | Site da Loja; divulgação nas comunidades (Telegram, Discord, redes sociais); QR code em eventos e meetups; links por comunidade (`/c/phpeste`); **e-mail de lançamento para seguidores** |
 | **Relacionamento** | Comunitário e transparente: página da comunidade mostrando para onde vai o dinheiro; **acompanhar comunidades**; notificações de pedido e de lançamentos por e-mail |
-| **Fontes de receita** | Comunidade: margem sobre o custo do fornecedor. Plataforma: **R$ 2,49 por saque** solicitado pela comunidade, para cobrir os custos |
+| **Fontes de receita** | Comunidade: margem sobre o custo do fornecedor. Plataforma: **R$ 2,49 por saque** solicitado por comunidades e fornecedores, para cobrir os custos |
 | **Recursos-chave** | Plataforma (código aberto?) com UI em DaisyUI, integração GeffinPay (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
 | **Atividades-chave** | Manter a plataforma; homologar fornecedores; apoiar comunidades a subir produtos; mediar problemas de entrega |
 | **Parcerias-chave** | Fornecedores (gráficas, canecas, pelúcias); GeffinPay; Correios; organizações dos eventos |
@@ -274,11 +274,11 @@ Fornecedor absorve %      parte do fornecedor = arred(valor_fornecedor × percen
 | **Fornecedor** | Custo dos itens + frete (menos o % do cartão, só se tiver acordo "fornecedor absorve") |
 | **Comunidade** | Margem + acréscimo de parcelamento recebido − sua parte da taxa |
 | **GeffinPay** | Taxa da transação (tabela acima) |
-| **Plataforma** | **R$ 2,49 por saque** solicitado pela comunidade (não cobra nada sobre as vendas) |
+| **Plataforma** | **R$ 2,49 por saque** solicitado pela comunidade ou pelo fornecedor (não cobra nada sobre as vendas) |
 
-**Monetização da plataforma: tarifa de saque.** O dinheiro das vendas fica como saldo da comunidade na subconta dela na GeffinPay. Sempre que a comunidade **solicita um saque** para a conta bancária, a plataforma cobra **R$ 2,49 fixos**, usados para pagar os custos dela (hospedagem, e-mails, domínio etc.). A plataforma não cobra nada nas vendas: a comunidade decide quando e quanto sacar, e sacar menos vezes com valores maiores fica mais barato.
+**Monetização da plataforma: tarifa de saque.** O dinheiro das vendas fica como saldo de cada recebedor (comunidade ou fornecedor) na subconta dele na GeffinPay. Sempre que uma **comunidade ou um fornecedor solicita um saque** para a conta bancária, a plataforma cobra **R$ 2,49 fixos**, usados para pagar os custos dela (hospedagem, e-mails, domínio etc.). A plataforma não cobra nada nas vendas: cada recebedor decide quando e quanto sacar, e sacar menos vezes com valores maiores fica mais barato.
 
-> Exemplo: saldo disponível de R$ 1.180,00 → saque de R$ 1.180,00 → a comunidade recebe **R$ 1.177,51** na conta, e a plataforma fica com R$ 2,49.
+> Exemplo: saldo disponível de R$ 1.180,00 → saque de R$ 1.180,00 → a comunidade recebe **R$ 1.177,51** na conta, e a plataforma fica com R$ 2,49. A regra é a mesma para o fornecedor: um saque de R$ 640,00 deposita R$ 637,51 na conta dele.
 
 **Rateio entre comunidades:** a parte da taxa das comunidades é dividida **proporcionalmente à margem** de cada uma. Os centavos que sobram do arredondamento vão para a comunidade com a maior margem, para a soma bater exatamente.
 
@@ -386,7 +386,7 @@ flowchart TB
 - **RN23** — No checkout, formas de pagamento em que a parte da taxa paga pelas comunidades seria **maior que a soma das margens** não são oferecidas. O parcelado repassado nunca cai nessa regra.
 - **RN24** — A loja mostra ao cliente, no carrinho e no checkout, **quanto a comunidade recebe a mais se ele pagar com Pix**.
 - **RN24a** — Na tela de produto (C04), a comunidade vê a margem líquida em cada forma de pagamento, conforme suas configurações. O sistema **alerta** quando a margem líquida fica abaixo de um mínimo (sugestão: R$ 1,00).
-- **RN24c** — **Tarifa de saque:** cada saque solicitado pela comunidade custa **R$ 2,49**, que vão para a plataforma. A tarifa é descontada do valor sacado. O valor do saque precisa ser **maior que R$ 2,49**. Só o **Dono** pode solicitar saque (RN04). A tarifa é configurável no admin, com vigência, e cada saque guarda a tarifa aplicada.
+- **RN24c** — **Tarifa de saque:** cada saque solicitado por **comunidade ou fornecedor** custa **R$ 2,49**, que vão para a plataforma. A tarifa é descontada do valor sacado. O valor do saque precisa ser **maior que R$ 2,49**. Na comunidade, só o **Dono** pode solicitar saque (RN04). No fornecedor, quem tem acesso ao painel dele. A tarifa é configurável no admin, com vigência, e cada saque guarda a tarifa aplicada.
 - **RN24b** — A tabela de taxas é versionada com **data de vigência**. Cada pagamento guarda a taxa, o acréscimo e os acordos aplicados.
 
 ### Acompanhar comunidades
@@ -847,7 +847,9 @@ sequenceDiagram
     end
 ```
 
-### 9.9 Saque da comunidade
+### 9.9 Saque (comunidade ou fornecedor)
+
+O fluxo é o mesmo para o fornecedor, que solicita pelo painel dele (F06). No exemplo, quem saca é a comunidade.
 
 ```mermaid
 sequenceDiagram
@@ -954,6 +956,7 @@ erDiagram
     PAGAMENTO ||--|{ SPLIT : "dividido em"
     PAGAMENTO }o--|| TABELA_TAXA : "usa taxa vigente"
     COMUNIDADE ||--o{ SAQUE : "solicita"
+    FORNECEDOR ||--o{ SAQUE : "solicita"
     CLIENTE ||--o{ SEGUIDOR : "acompanha"
     COMUNIDADE ||--o{ SEGUIDOR : "é acompanhada"
     COMUNIDADE ||--o{ LOTE_LANCAMENTO : "gera"
@@ -1101,8 +1104,9 @@ erDiagram
     }
     SAQUE {
         uuid id
-        uuid comunidade_id
-        uuid solicitado_por "Dono"
+        string recebedor_tipo "comunidade|fornecedor"
+        uuid recebedor_id
+        uuid solicitado_por
         decimal valor
         decimal tarifa_plataforma "2,49 snapshot"
         decimal valor_liquido
@@ -1189,7 +1193,7 @@ Correspondência sugerida entre os wireframes e os componentes DaisyUI:
 | F03 | Painel Fornecedor | Catálogo de itens | Fornecedor | Itens, variações, custo, peso/dimensões, prazo de produção |
 | F04 | Painel Fornecedor | Pedidos (lista) | Fornecedor | Filtro por status, comunidade, prazo |
 | F05 | Painel Fornecedor | Pedido (detalhe) | Fornecedor | Itens com arte/estampa, endereço, etiqueta, informar rastreio |
-| F06 | Painel Fornecedor | Financeiro | Fornecedor | Recebido, a receber, por comunidade |
+| F06 | Painel Fornecedor | Financeiro | Fornecedor | Saldo disponível, a receber, por comunidade, **solicitar saque** (tarifa de R$ 2,49 e valor líquido), histórico de saques |
 | A01 | Admin | Dashboard | Admin | GMV, pedidos, comunidades ativas, alertas |
 | A02 | Admin | Comunidades | Admin | Aprovar, suspender |
 | A03 | Admin | Fornecedores da plataforma | Admin | Homologar, suspender |
@@ -1545,7 +1549,7 @@ flowchart LR
 | # | Tema | Pergunta / risco | Sugestão inicial |
 |---|---|---|---|
 | Q1 | **Taxa do gateway** | ✅ Decidido: parcelado repassado ao cliente por padrão (a comunidade pode assumir); taxa % do cartão negociável com o fornecedor; resto rateado pela margem | — |
-| Q2 | **Sustentabilidade da plataforma** | ✅ Decidido: tarifa de R$ 2,49 por saque da comunidade (RN24c). Acompanhar se a receita cobre os custos, principalmente os de e-mail | — |
+| Q2 | **Sustentabilidade da plataforma** | ✅ Decidido: tarifa de R$ 2,49 por saque de comunidade ou fornecedor (RN24c). Acompanhar se a receita cobre os custos, principalmente os de e-mail | — |
 | Q3 | **GeffinPay** | Permite cobrar a tarifa de saque da plataforma (transferência entre subcontas ou taxa no saque)? Suporta split com N recebedores, estorno parcial com reversão de split, subcontas para PF e repasse da taxa do parcelado ao cliente (acréscimo) e desconto de taxa em recebedor específico (fornecedor que absorve %)? Estorno devolve a taxa? Prazo de recebimento (D+?) por forma de pagamento? | Validar a API antes de fechar a arquitetura |
 | Q4 | **API dos Correios** | A API oficial (CWS) exige contrato; cada fornecedor tem o seu? | Cotação com contrato da plataforma ou dos fornecedores; avaliar agregadores (Melhor Envio etc.) como alternativa |
 | Q5 | **Responsabilidade legal** | Quem emite nota fiscal? Comunidades sem CNPJ podem vender? | Fornecedor emite NF da venda do produto; comunidade recebe a margem como intermediação/doação. **Validar com contador** |
