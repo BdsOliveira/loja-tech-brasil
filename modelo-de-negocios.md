@@ -16,7 +16,7 @@
 **Mudanças da v0.2**
 - Escopo ampliado: de loja do PHP Brasil para **loja oficial das comunidades de tecnologia do Brasil** (qualquer stack).
 - Nova funcionalidade: cliente pode **acompanhar comunidades** e receber e-mail a cada lançamento (§5, §8.7–8.8, §9.6–9.7).
-- **Tabela real de taxas da GeffinPay** e split recalculado por forma de pagamento (§6).
+- **Tabela real de taxas do gateway** e split recalculado por forma de pagamento (§6).
 
 ---
 
@@ -30,7 +30,7 @@ flowchart LR
     COM["🏷️ COMUNIDADE<br/>a lojista<br/><i>sem estoque, sem envio</i>"]
     LOJA["🛒 LOJA DAS COMUNIDADES<br/>vitrine única de todas<br/>as comunidades tech BR"]
     CLI(("🙋 CLIENTE"))
-    GEF["💳 GEFFINPAY<br/>divide o pagamento<br/>(split)"]
+    GEF["💳 GATEWAY<br/>divide o pagamento<br/>(split)"]
 
     FOR -- "1 · oferece produtos com preço<br/>negociado com a comunidade<br/>(fornecedor global: já negociado)" --> COM
     COM -- "2 · publica o produto<br/>custo + sua margem" --> LOJA
@@ -93,7 +93,7 @@ A operação segue um modelo **parecido com dropshipping**:
 
 - a comunidade **não mantém estoque** e não faz envios;
 - o **fornecedor** produz ou separa o item e envia direto ao cliente;
-- o pagamento é dividido automaticamente (**split**) entre **gateway (GeffinPay)**, **comunidade** e **fornecedor**;
+- o pagamento é dividido automaticamente (**split**) entre **gateway**, **comunidade** e **fornecedor**;
 - o frete é calculado pela **API dos Correios**.
 
 ```mermaid
@@ -101,7 +101,7 @@ flowchart LR
     C((Cliente)) -->|compra| L[Loja das Comunidades Tech BR]
     L -->|pedido| F[Fornecedor]
     F -->|envia produto| C
-    L -->|split do pagamento| G[GeffinPay]
+    L -->|split do pagamento| G[Gateway]
     G -->|custo + frete| F
     G -->|margem| COM[Comunidade]
     G -->|taxa| G
@@ -152,7 +152,7 @@ flowchart TB
     end
     CLI[Cliente]
     subgraph Externos
-        GEF[GeffinPay - gateway com split]
+        GEF[Gateway de pagamento com split]
         COR[API dos Correios]
         MAIL[Serviço de e-mail]
     end
@@ -180,7 +180,7 @@ flowchart TB
 | **Fornecedor** | Gráfica, fábrica de canecas, ateliê de mascotes/pelúcias etc. | Receber pedidos, atualizar status, informar rastreio, manter preço de custo e prazo de produção |
 | **Fornecedor da plataforma** | Fornecedor homologado pelo admin e disponível para **todas** as comunidades | Mesmas ações de fornecedor |
 | **Fornecedor próprio** | Cadastrado por uma comunidade e visível **só para ela** | Mesmas ações de fornecedor |
-| **GeffinPay** | Gateway de pagamento com split | Cobrar o cliente, dividir o valor e repassar para cada recebedor |
+| **Gateway de pagamento** | Serviço de pagamento com split | Cobrar o cliente, dividir o valor e repassar para cada recebedor |
 | **Correios** | API de cotação de frete e rastreio | Calcular preço e prazo, fornecer eventos de rastreio |
 
 ---
@@ -194,9 +194,9 @@ flowchart TB
 | **Canais** | Site da Loja; divulgação nas comunidades (Telegram, Discord, redes sociais); QR code em eventos e meetups; links por comunidade (`/c/phpeste`); **e-mail de lançamento para seguidores** |
 | **Relacionamento** | Comunitário e transparente: página da comunidade mostrando para onde vai o dinheiro; **acompanhar comunidades**; notificações de pedido e de lançamentos por e-mail |
 | **Fontes de receita** | Comunidade: margem sobre o custo do fornecedor. Plataforma: **R$ 2,49 por saque** solicitado por comunidades e fornecedores, para cobrir os custos |
-| **Recursos-chave** | Plataforma (código aberto?) com UI em DaisyUI, integração GeffinPay (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
+| **Recursos-chave** | Plataforma (código aberto?) com UI em DaisyUI, integração com gateway (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
 | **Atividades-chave** | Manter a plataforma; homologar fornecedores; apoiar comunidades a subir produtos; mediar problemas de entrega |
-| **Parcerias-chave** | Fornecedores (gráficas, canecas, pelúcias); GeffinPay; Correios; organizações dos eventos |
+| **Parcerias-chave** | Fornecedores (gráficas, canecas, pelúcias); gateway de pagamento; Correios; organizações dos eventos |
 | **Estrutura de custos** | Cobertos pela tarifa de saque: hospedagem e domínio; taxas do gateway (por transação, ver §6); envio de e-mails (cresce com o nº de seguidores); tempo de voluntários; eventual contrato com os Correios |
 
 ---
@@ -245,7 +245,7 @@ Base do pedido            = Σ (Preço de venda × qtd) + Σ Frete por fornecedo
 Total cobrado do cliente  = Base do pedido + acréscimo de parcelamento (só em 2x–6x, se repassado)
 ```
 
-### Tabela de taxas da GeffinPay
+### Tabela de taxas do gateway
 
 | Forma de pagamento | Taxa | Tipo |
 |---|---|---|
@@ -257,7 +257,7 @@ Total cobrado do cliente  = Base do pedido + acréscimo de parcelamento (só em 
 - Pix e boleto têm **taxa fixa em centavos**, não importa o valor do pedido. Só o cartão de crédito tem parte percentual.
 - Parcelamento **máximo de 6x**.
 - A taxa é cobrada **uma vez por pedido** (uma transação), mesmo com várias comunidades e fornecedores no carrinho.
-- A tabela fica **configurável no admin com data de vigência**, e cada pagamento guarda a taxa aplicada (*snapshot*). Se a GeffinPay mudar os preços, pedidos antigos não mudam.
+- A tabela fica **configurável no admin com data de vigência**, e cada pagamento guarda a taxa aplicada (*snapshot*). Se o gateway mudar os preços, pedidos antigos não mudam.
 
 ### Duas escolhas da comunidade
 
@@ -307,10 +307,10 @@ Fornecedor absorve %      parte do fornecedor = arred(valor_fornecedor × percen
 |---|---|
 | **Fornecedor** | Custo dos itens + frete (menos o % do cartão, só se tiver acordo "fornecedor absorve") |
 | **Comunidade** | Margem + acréscimo de parcelamento recebido − sua parte da taxa |
-| **GeffinPay** | Taxa da transação (tabela acima) |
+| **Gateway** | Taxa da transação (tabela acima) |
 | **Plataforma** | **R$ 2,49 por saque** solicitado pela comunidade ou pelo fornecedor (não cobra nada sobre as vendas) |
 
-**Monetização da plataforma: tarifa de saque.** O dinheiro das vendas fica como saldo de cada recebedor (comunidade ou fornecedor) na subconta dele na GeffinPay. Sempre que uma **comunidade ou um fornecedor solicita um saque** para a conta bancária, a plataforma cobra **R$ 2,49 fixos**, usados para pagar os custos dela (hospedagem, e-mails, domínio etc.). A plataforma não cobra nada nas vendas: cada recebedor decide quando e quanto sacar, e sacar menos vezes com valores maiores fica mais barato.
+**Monetização da plataforma: tarifa de saque.** O dinheiro das vendas fica como saldo de cada recebedor (comunidade ou fornecedor) na subconta dele no gateway. Sempre que uma **comunidade ou um fornecedor solicita um saque** para a conta bancária, a plataforma cobra **R$ 2,49 fixos**, usados para pagar os custos dela (hospedagem, e-mails, domínio etc.). A plataforma não cobra nada nas vendas: cada recebedor decide quando e quanto sacar, e sacar menos vezes com valores maiores fica mais barato.
 
 > Exemplo: saldo disponível de R$ 1.180,00 → saque de R$ 1.180,00 → a comunidade recebe **R$ 1.177,51** na conta, e a plataforma fica com R$ 2,49. A regra é a mesma para o fornecedor: um saque de R$ 640,00 deposita R$ 637,51 na conta dele.
 
@@ -326,7 +326,7 @@ Fornecedor absorve %      parte do fornecedor = arred(valor_fornecedor × percen
 | Frete PAC (cotação Correios) | R$ 22,00 |
 | **Base do pedido** | **R$ 92,00** |
 
-| Forma de pagamento | Cliente paga | Taxa GeffinPay | Fornecedor | Comunidade |
+| Forma de pagamento | Cliente paga | Taxa do gateway | Fornecedor | Comunidade |
 |---|---|---|---|---|
 | Pix | R$ 92,00 | R$ 2,49 | R$ 67,00 | **R$ 22,51** |
 | Boleto | R$ 92,00 | R$ 2,49 | R$ 67,00 | **R$ 22,51** |
@@ -365,7 +365,7 @@ flowchart TB
     SP1 --> S3[Split: PHP-SP margem camisa]
     SP2 --> S4[Split: Ateliê custo+frete B]
     SP2 --> S5[Split: PHPeste margem mascote]
-    P --> S6[Split: GeffinPay taxa única do pedido<br/>coberta pelo acréscimo, comunidades<br/>ou fornecedores conforme acordos]
+    P --> S6[Split: gateway taxa única do pedido<br/>coberta pelo acréscimo, comunidades<br/>ou fornecedores conforme acordos]
 ```
 
 ---
@@ -375,14 +375,14 @@ flowchart TB
 ### Comunidades e membros
 - **RN01** — Comunidade só vende após aprovação do administrador da plataforma. Critério sugerido: ser comunidade de tecnologia brasileira, sem fins lucrativos, com atividade pública recente (meetups, eventos, grupo ativo) e responsáveis identificados.
 - **RN01a** — Comunidade informa as **tecnologias/temas** (ex.: PHP, Python, dados) e a **região**, usados em filtros e busca na loja.
-- **RN02** — Comunidade precisa de conta recebedora (subconta) ativa na GeffinPay para publicar produtos.
+- **RN02** — Comunidade precisa de conta recebedora (subconta) ativa no gateway para publicar produtos.
 - **RN03** — Uma comunidade tem **1 ou mais membros**; ao menos um com papel **Dono**.
 - **RN04** — Só **Dono** vê o financeiro, altera dados bancários e gerencia membros.
 - **RN05** — Um usuário pode ser membro de mais de uma comunidade.
 
 ### Fornecedores
 - **RN06** — Fornecedor pode ser **da plataforma** (homologado pelo admin, visível para todas as comunidades) ou **próprio** (cadastrado pela comunidade, visível só para ela).
-- **RN07** — Fornecedor precisa de subconta GeffinPay ativa e **CEP de origem** para cálculo de frete.
+- **RN07** — Fornecedor precisa de subconta no gateway ativa e **CEP de origem** para cálculo de frete.
 - **RN08** — Fornecedor mantém: preço de custo por variação (tamanho/cor), prazo de produção (dias) e dimensões/peso de envio.
 - **RN09** — Se o fornecedor alterar o custo, os produtos afetados ficam **pendentes de revisão** pela comunidade (a margem não pode ficar negativa sem ninguém perceber).
 
@@ -409,12 +409,12 @@ flowchart TB
 ### Pedido, frete e pagamento
 - **RN14** — Frete calculado **por sub-pedido** (CEP origem do fornecedor → CEP do cliente), usando peso e dimensões somados dos itens.
 - **RN15** — Prazo exibido ao cliente = prazo de produção do fornecedor + prazo dos Correios.
-- **RN16** — Pedido só é enviado ao fornecedor **após pagamento confirmado** (webhook da GeffinPay).
+- **RN16** — Pedido só é enviado ao fornecedor **após pagamento confirmado** (webhook do gateway).
 - **RN17** — Fornecedor tem **X dias úteis** (a definir) para informar o código de rastreio; se não informar, o pedido é sinalizado ao admin e à comunidade.
 - **RN18** — Cancelamento antes da produção gera estorno total; depois da produção, segue a política da comunidade e o CDC (direito de arrependimento de 7 dias para compras online).
 
 ### Taxas e split
-- **RN19** — Taxas da GeffinPay: **Pix R$ 2,49**, **boleto R$ 2,49** (fixas), **crédito à vista R$ 0,49 + 3,99%**, **crédito 2x–6x R$ 0,49 + 4,49%**. Parcelamento máximo de 6x.
+- **RN19** — Taxas do gateway: **Pix R$ 2,49**, **boleto R$ 2,49** (fixas), **crédito à vista R$ 0,49 + 3,99%**, **crédito 2x–6x R$ 0,49 + 4,49%**. Parcelamento máximo de 6x.
 - **RN20** — A taxa é cobrada uma vez por pedido. A parte que cabe às **comunidades** é rateada **proporcionalmente à margem** de cada uma; a sobra de centavos do arredondamento vai para a comunidade de maior margem.
 - **RN21** — **Parcelamento (2x–6x):** por padrão, a **taxa inteira do parcelado (R$ 0,49 + 4,49%)** é **repassada ao cliente** como acréscimo no total, e não só a diferença em relação ao crédito à vista. A comunidade pode escolher **assumir** a taxa e oferecer parcelamento sem juros (configuração em C10).
 - **RN22** — **Taxa % do cartão:** por padrão a comunidade absorve e o fornecedor recebe custo + frete cheios. A comunidade pode negociar com cada fornecedor que ele **absorva o percentual do cartão sobre o valor dele** (custo + frete). O acordo vale para crédito à vista e parcelado assumido e é registrado por par comunidade–fornecedor (C06). Só vale depois que o fornecedor **aceitar** no painel dele.
@@ -446,7 +446,7 @@ flowchart TD
     C --> D[Envia para aprovação]
     D --> E{Admin aprova?}
     E -- Não --> F[Notifica motivo] --> C
-    E -- Sim --> G[Cria subconta na GeffinPay<br/>dados bancários / KYC]
+    E -- Sim --> G[Cria subconta no gateway<br/>dados bancários / KYC]
     G --> H{Subconta ativa?}
     H -- Não --> I[Pendência exibida no painel] --> G
     H -- Sim --> J[Comunidade liberada para cadastrar produtos]
@@ -462,7 +462,7 @@ flowchart TD
     B -- Não --> D[Cadastra fornecedor próprio<br/>nome, CNPJ/CPF, e-mail, CEP origem]
     D --> E[Envia convite por e-mail ao fornecedor]
     E --> F[Fornecedor cria acesso ao painel]
-    F --> G[Fornecedor cria subconta GeffinPay]
+    F --> G[Fornecedor cria subconta no gateway]
     G --> H{Subconta ativa?}
     H -- Não --> G
     H -- Sim --> I[Fornecedor disponível para a comunidade]
@@ -506,7 +506,7 @@ flowchart TD
     H --> I[Login ou cadastro rápido]
     I --> J[Endereço e dados pessoais]
     J --> K[Escolhe pagamento<br/>Pix / Boleto / Crédito até 6x<br/>opções filtradas pela RN23<br/>destaque: quanto a comunidade ganha a mais no Pix]
-    K --> L[GeffinPay processa com split]
+    K --> L[Gateway processa com split]
     L --> M{Aprovado?}
     M -- Não --> N[Mostra erro e permite nova tentativa] --> K
     M -- Sim / Pendente Pix --> O[Página de confirmação]
@@ -546,7 +546,7 @@ flowchart TD
     F -- Não --> G[Informa cliente com justificativa]
     E --> H[Cliente devolve produto]
     H --> C
-    C --> I[Solicita estorno à GeffinPay]
+    C --> I[Solicita estorno ao gateway]
     I --> J[Split revertido proporcionalmente<br/>fornecedor, comunidade]
     J --> K[E-mails para cliente, comunidade e fornecedor]
 ```
@@ -665,7 +665,7 @@ sequenceDiagram
     actor Cliente
     participant Loja as Loja (back-end)
     participant DB as Banco de dados
-    participant GEF as GeffinPay
+    participant GEF as Gateway
 
     Cliente->>Loja: Confirma pedido (endereço, frete, forma de pagamento)
     Loja->>DB: Revalida preço, estoque/tiragem e frete
@@ -757,7 +757,7 @@ sequenceDiagram
     participant Loja as Loja (back-end)
     actor Com as Comunidade
     actor Forn as Fornecedor
-    participant GEF as GeffinPay
+    participant GEF as Gateway
 
     Cliente->>Loja: Solicita cancelamento do sub-pedido
     alt Aguardando produção
@@ -892,7 +892,7 @@ sequenceDiagram
     actor Dono as Dono da comunidade
     participant API as Loja (back-end)
     participant DB as Banco de dados
-    participant GEF as GeffinPay
+    participant GEF as Gateway
 
     Dono->>API: Solicita saque de R$ 1.180,00
     API->>API: Verifica papel Dono e valor > R$ 2,49
@@ -1006,7 +1006,7 @@ erDiagram
         int total_seguidores
         string parcelamento "repassar|assumir"
         string status "pendente|aprovada|suspensa"
-        string geffinpay_recebedor_id
+        string gateway_recebedor_id
     }
     COMUNIDADE_FORNECEDOR {
         uuid comunidade_id
@@ -1050,7 +1050,7 @@ erDiagram
         string cep_origem
         string escopo "plataforma|proprio"
         uuid comunidade_dona_id "nulo se plataforma"
-        string geffinpay_recebedor_id
+        string gateway_recebedor_id
     }
     ITEM_FORNECEDOR {
         uuid id
@@ -1098,7 +1098,7 @@ erDiagram
     }
     PAGAMENTO {
         uuid id
-        string geffinpay_cobranca_id
+        string gateway_cobranca_id
         string metodo "pix|boleto|credito"
         int parcelas "1 a 6"
         decimal acrescimo_parcelamento "0 se sem juros"
@@ -1211,7 +1211,7 @@ Correspondência sugerida entre os wireframes e os componentes DaisyUI:
 | L10 | Loja | Minha conta — pedidos | Cliente | Lista, status por envio, rastreio, cancelar/devolver |
 | L11 | Loja | Minha conta — comunidades acompanhadas | Cliente | Lista de comunidades, tipos de lançamento por comunidade, deixar de acompanhar, pausar todos os e-mails |
 | L12 | Loja | Descadastro (página do link do e-mail) | Cliente | Confirmação sem login: deixar esta comunidade ou todos os lançamentos |
-| C01 | Painel Comunidade | Onboarding / cadastro | Membro | Dados da comunidade, status de aprovação, subconta GeffinPay |
+| C01 | Painel Comunidade | Onboarding / cadastro | Membro | Dados da comunidade, status de aprovação, subconta no gateway |
 | C02 | Painel Comunidade | Dashboard | Membro | Vendas do período, pedidos pendentes, **nº de seguidores**, alertas (custo alterado, atraso, margem baixa) |
 | C03 | Painel Comunidade | Produtos (lista) | Membro | Status (rascunho, em análise, aguardando autorização, reprovado, publicado), preço, margem, fornecedor, motivo de reprovação |
 | C04 | Painel Comunidade | Produto (form) | Membro | Dados, fornecedor, variações, margem, margem líquida por forma de pagamento, aviso de que publicar notifica os seguidores |
@@ -1221,9 +1221,9 @@ Correspondência sugerida entre os wireframes e os componentes DaisyUI:
 | C07 | Painel Comunidade | Pedidos | Membro | Pedidos com itens da comunidade, status, rastreio |
 | C08 | Painel Comunidade | Financeiro | Dono | Saldo disponível, a receber, estornos, extrato por pedido com forma de pagamento e taxa, **solicitar saque** (mostra a tarifa de R$ 2,49 e o valor líquido), histórico de saques |
 | C09 | Painel Comunidade | Membros | Dono | Convidar, papéis, remover |
-| C10 | Painel Comunidade | Configurações | Dono | Perfil público, tecnologias e região, dados bancários (GeffinPay), política de troca, **parcelamento: repassar ao cliente (padrão) ou assumir** |
+| C10 | Painel Comunidade | Configurações | Dono | Perfil público, tecnologias e região, dados bancários (gateway), política de troca, **parcelamento: repassar ao cliente (padrão) ou assumir** |
 | C11 | Painel Comunidade | Autorizações e denúncias | Dono | Pedidos de outras comunidades para usar referência à sua (autorizar/recusar), autorizações concedidas, denúncias feitas e seus resultados |
-| F01 | Painel Fornecedor | Onboarding | Fornecedor | Aceitar convite, dados, CEP origem, subconta GeffinPay |
+| F01 | Painel Fornecedor | Onboarding | Fornecedor | Aceitar convite, dados, CEP origem, subconta no gateway |
 | F02 | Painel Fornecedor | Dashboard | Fornecedor | Novos pedidos, em produção, atrasados |
 | F03 | Painel Fornecedor | Catálogo de itens | Fornecedor | Itens, variações, custo, peso/dimensões, prazo de produção |
 | F04 | Painel Fornecedor | Pedidos (lista) | Fornecedor | Filtro por status, comunidade, prazo |
@@ -1233,7 +1233,7 @@ Correspondência sugerida entre os wireframes e os componentes DaisyUI:
 | A02 | Admin | Comunidades | Admin | Aprovar, suspender |
 | A03 | Admin | Fornecedores da plataforma | Admin | Homologar, suspender |
 | A04 | Admin | Pedidos e disputas | Admin | Busca global, mediação, estornos |
-| A05 | Admin | Configurações | Admin | **Tabela de taxas GeffinPay com vigência**, janela de agrupamento de lançamentos, prazos (RN17), integrações |
+| A05 | Admin | Configurações | Admin | **Tabela de taxas do gateway com vigência**, janela de agrupamento de lançamentos, prazos (RN17), integrações |
 | A06 | Admin | Tecnologias | Admin | Cadastro de tecnologias/temas usados nos filtros |
 | A07 | Moderação | Fila de análise | Moderador | Produtos/coleções pendentes, denúncias (prioridade), filtros, tempo na fila |
 | A08 | Moderação | Análise do produto | Moderador | Produto enviado × produtos similares lado a lado, alertas da pré-checagem, histórico de versões, aprovar / reprovar com motivo / pedir autorização |
@@ -1585,7 +1585,7 @@ flowchart LR
 |---|---|---|---|
 | Q1 | **Taxa do gateway** | ✅ Decidido: parcelado repassado ao cliente por padrão (a comunidade pode assumir); taxa % do cartão negociável com o fornecedor; resto rateado pela margem | — |
 | Q2 | **Sustentabilidade da plataforma** | ✅ Decidido: tarifa de R$ 2,49 por saque de comunidade ou fornecedor (RN24c). Acompanhar se a receita cobre os custos, principalmente os de e-mail | — |
-| Q3 | **GeffinPay** | Permite cobrar a tarifa de saque da plataforma (transferência entre subcontas ou taxa no saque)? Suporta split com N recebedores, estorno parcial com reversão de split, subcontas para PF e repasse da taxa do parcelado ao cliente (acréscimo) e desconto de taxa em recebedor específico (fornecedor que absorve %)? Estorno devolve a taxa? Prazo de recebimento (D+?) por forma de pagamento? | Validar a API antes de fechar a arquitetura |
+| Q3 | **Gateway** | Permite cobrar a tarifa de saque da plataforma (transferência entre subcontas ou taxa no saque)? Suporta split com N recebedores, estorno parcial com reversão de split, subcontas para PF e repasse da taxa do parcelado ao cliente (acréscimo) e desconto de taxa em recebedor específico (fornecedor que absorve %)? Estorno devolve a taxa? Prazo de recebimento (D+?) por forma de pagamento? | Validar a API antes de fechar a arquitetura |
 | Q4 | **API dos Correios** | A API oficial (CWS) exige contrato; cada fornecedor tem o seu? | Cotação com contrato da plataforma ou dos fornecedores; avaliar agregadores (Melhor Envio etc.) como alternativa |
 | Q5 | **Responsabilidade legal** | Quem emite nota fiscal? Comunidades sem CNPJ podem vender? | Fornecedor emite NF da venda do produto; comunidade recebe a margem como intermediação/doação. **Validar com contador** |
 | Q6 | **Chargeback** | Quem arca com contestação de cartão? | Definir regra no termo de uso; possível reserva/retensão da comunidade |
@@ -1617,7 +1617,7 @@ flowchart LR
 | Fase | Escopo |
 |---|---|
 | **0 — Validação** | Apresentar este documento às comunidades; responder Q1–Q5 e Q12; conversar com 2–3 fornecedores e 3–5 comunidades piloto, incluindo ao menos uma fora do PHP (ex.: PHPeste, PHP BR + uma de outra stack) |
-| **1 — MVP** | Loja (L01–L10), painel comunidade básico (produtos, pedidos, financeiro), painel fornecedor (pedidos + rastreio), split GeffinPay com as 4 formas de pagamento, tabela de taxas, parcelamento repassado/assumido e destaque do Pix, frete Correios, e-mails E01–E03. **Análise de originalidade manual** (fila A07/A08, aprovar/reprovar com motivo). **Acompanhar comunidade simples** (seguir/deixar, e-mail E08 agrupado, descadastro). Fornecedores cadastrados manualmente pelo admin |
+| **1 — MVP** | Loja (L01–L10), painel comunidade básico (produtos, pedidos, financeiro), painel fornecedor (pedidos + rastreio), split no gateway com as 4 formas de pagamento, tabela de taxas, parcelamento repassado/assumido e destaque do Pix, frete Correios, e-mails E01–E03. **Análise de originalidade manual** (fila A07/A08, aprovar/reprovar com motivo). **Acompanhar comunidade simples** (seguir/deixar, e-mail E08 agrupado, descadastro). Fornecedores cadastrados manualmente pelo admin |
 | **2 — Escala** | Autoatendimento de comunidades e fornecedores, múltiplos membros e papéis, diretório por tecnologia/região, coleções/edições com tiragem, estorno pelo painel, rastreio automático, preferências por tipo de lançamento (L11), histórico de lançamentos (C05b), acordo de taxa % com fornecedor (C06), pré-checagem automática de referências, autorizações e denúncias (C11) |
 | **3 — Extras** | Avaliações, cupons, pré-venda de edições, kits (camisa + caneca + mascote), novos eventos de lançamento (pré-venda, reposição, evento anunciado), relatório público de transparência por comunidade |
 
