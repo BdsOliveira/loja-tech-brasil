@@ -391,6 +391,7 @@ flowchart TB
 - **RN11** — Preço de venda = custo do fornecedor + margem da comunidade (valor fixo ou %).
 - **RN12** — Produto pode pertencer a uma **Coleção/Edição** (ex.: *PHPeste 2026*) com data de início e fim de venda e **tiragem limitada** opcional.
 - **RN13** — Produtos de edição encerrada saem da vitrine, mas continuam no histórico.
+- **RN13a** — Todo produto exibido na loja (vitrine, listagem, busca, coleção, detalhe, carrinho e checkout) mostra um **label com o nome da comunidade** a que pertence, com link para a página dela. Assim o cliente sempre sabe qual comunidade está apoiando.
 
 ### Análise de originalidade (anti-plágio)
 - **RN32** — **Todo produto novo passa por análise humana** antes de ir para a vitrine. A comunidade envia para análise, e só um **moderador da plataforma** aprova a publicação.
@@ -1177,7 +1178,7 @@ Correspondência sugerida entre os wireframes e os componentes DaisyUI:
 |---|---|
 | Cabeçalho da loja, busca, carrinho | `navbar`, `input`, `indicator`, `dropdown` |
 | Menu lateral dos painéis | `drawer` + `menu` |
-| Cards de produto e comunidade | `card`, `badge` |
+| Cards de produto e comunidade | `card`, `badge` (label da comunidade no produto, RN13a) |
 | Banner de coleção/edição | `hero`, `countdown` |
 | Botão Acompanhar / Acompanhando | `btn`, `dropdown` |
 | Variações (P/M/G/GG), forma de pagamento | `join` + `radio`, `select` |
@@ -1202,7 +1203,7 @@ Correspondência sugerida entre os wireframes e os componentes DaisyUI:
 | L03 | Loja | Listagem / busca | Cliente | Filtros por tecnologia, região, comunidade, categoria, coleção, preço |
 | L03b | Loja | Diretório de comunidades | Cliente | Todas as comunidades, filtro por tecnologia e região, Acompanhar direto no card |
 | L04 | Loja | Página de coleção/edição | Cliente | Banner do evento, contagem regressiva, tiragem restante |
-| L05 | Loja | Detalhe do produto | Cliente | Fotos, variações, preço, simulador de frete, prazo, "quanto vai para a comunidade", Acompanhar comunidade, link "Denunciar uso indevido" (visível para membros de comunidades) |
+| L05 | Loja | Detalhe do produto | Cliente | Label da comunidade (RN13a), fotos, variações, preço, simulador de frete, prazo, "quanto vai para a comunidade", Acompanhar comunidade, link "Denunciar uso indevido" (visível para membros de comunidades) |
 | L06 | Loja | Carrinho | Cliente | Itens agrupados por envio, CEP, escolha de frete por grupo |
 | L07 | Loja | Checkout — identificação/endereço | Cliente | Login/cadastro rápido, endereço (autocompletar via CEP) |
 | L08 | Loja | Checkout — pagamento | Cliente | Pix, boleto, crédito 1x a 6x com acréscimo (ou sem juros, se a comunidade assumir), filtrado pela RN23; quanto as comunidades recebem em cada opção; resumo |
