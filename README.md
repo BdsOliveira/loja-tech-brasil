@@ -1,8 +1,11 @@
 # Loja das Comunidades Tech BR — Modelo de Negócios
 
 > Documento para discussão com as comunidades de tecnologia do Brasil (piloto: comunidade PHP Brasil).
-> Versão 0.3 — 24/09/2026 — **rascunho aberto a contribuições**
+> Versão 0.4 — 25/09/2026 — **rascunho aberto a contribuições**
 > *"Loja das Comunidades Tech BR" é nome provisório.*
+
+**Mudanças da v0.4**
+- Três novas regras de negócio **propostas para discussão** (marcadas 🔶, não decididas): RN42 (reserva de tiragem limitada para evitar overselling), RN43 (encerramento/saída de comunidade) e RN44 (retenção/exclusão de dados pessoais, LGPD). Novas linhas Q20 e Q21 em §14 registram os riscos que motivaram as propostas.
 
 **Mudanças da v0.3**
 - Biblioteca de UI definida: **DaisyUI**, usando a skill `npx -y skills add saadeghi/daisyui` (§12).
@@ -379,6 +382,7 @@ flowchart TB
 - **RN03** — Uma comunidade tem **1 ou mais membros**; ao menos um com papel **Dono**.
 - **RN04** — Só **Dono** vê o financeiro, altera dados bancários e gerencia membros.
 - **RN05** — Um usuário pode ser membro de mais de uma comunidade.
+- **RN43** — 🔶 *Proposta em discussão, sub-pontos a validar com jurídico.* Comunidade **suspensa pelo admin** ou que solicita **encerramento** deixa de poder publicar produtos novos e some do diretório/busca, mas: (a) pedidos já pagos e ainda não entregues continuam até a conclusão do envio; (b) o saldo disponível na subconta segue sacável pelo(s) Dono(s) por um prazo após o encerramento (sugestão: 90 dias, a definir); (c) produtos publicados saem da vitrine mas seguem no histórico de pedidos de quem já comprou, como já vale para edição encerrada (RN13). Em aberto: prazo exato de retenção do saldo, e o que fazer se a comunidade suspensa tinha pedido em produção sem fornecedor confirmado.
 
 ### Fornecedores
 - **RN06** — Fornecedor pode ser **da plataforma** (homologado pelo admin, visível para todas as comunidades) ou **próprio** (cadastrado pela comunidade, visível só para ela).
@@ -392,6 +396,7 @@ flowchart TB
 - **RN12** — Produto pode pertencer a uma **Coleção/Edição** (ex.: *PHPeste 2026*) com data de início e fim de venda e **tiragem limitada** opcional.
 - **RN13** — Produtos de edição encerrada saem da vitrine, mas continuam no histórico.
 - **RN13a** — Todo produto exibido na loja (vitrine, listagem, busca, coleção, detalhe, carrinho e checkout) mostra um **label com o nome da comunidade** a que pertence, com link para a página dela. Assim o cliente sempre sabe qual comunidade está apoiando.
+- **RN42** — 🔶 *Proposta em discussão, parâmetros a validar.* Item de coleção/edição com **tiragem limitada** é reservado ao entrar no carrinho por um tempo curto (sugestão: 15 min, renovável enquanto o cliente segue ativo no checkout); a reserva expira e libera a unidade automaticamente se o pagamento não for concluído (ex.: Pix/boleto vencido). A confirmação definitiva da tiragem só ocorre no **pagamento confirmado** (RN16), por operação atômica no banco que verifica o limite no mesmo instante em que soma a venda. Se a tiragem já tiver esgotado nesse momento por concorrência entre reservas simultâneas, o sub-pedido é **cancelado automaticamente com estorno total** e o cliente é avisado. Objetivo: evitar vender a mesma unidade de edição limitada duas vezes.
 
 ### Análise de originalidade (anti-plágio)
 - **RN32** — **Todo produto novo passa por análise humana** antes de ir para a vitrine. A comunidade envia para análise, e só um **moderador da plataforma** aprova a publicação.
@@ -432,6 +437,9 @@ flowchart TB
 - **RN29** — Produto publicado **dentro de uma coleção** que está sendo publicada entra no e-mail da coleção, não em um e-mail separado.
 - **RN30** — Todo e-mail de lançamento tem link de **descadastro em 1 clique** (desta comunidade ou de todos os lançamentos). O cliente escolhe na conta quais tipos de evento quer receber.
 - **RN31** — A comunidade vê **apenas o número** de seguidores, nunca os dados pessoais deles.
+
+### Privacidade e dados (LGPD)
+- **RN44** — 🔶 *Proposta em discussão, prazos a validar com jurídico.* Dados pessoais do cliente (endereço, telefone) compartilhados com o fornecedor (necessários para o envio, ver Q10) são retidos pelo fornecedor apenas pelo tempo necessário à entrega e eventual troca/garantia (sugestão: 90 dias após a entrega, a definir). Cliente pode solicitar exclusão dos próprios dados pela conta; pedidos já concluídos mantêm os dados mínimos exigidos por obrigação fiscal/contábil, o resto é anonimizado. Complementa Q10.
 
 ---
 
@@ -1592,7 +1600,7 @@ flowchart LR
 | Q7 | **Atraso/extravio** | Fornecedor não envia ou produto se perde | Prazo RN17, alerta, reenvio pelo fornecedor, mediação do admin |
 | Q8 | **Qualidade** | Produto ruim afeta a imagem da comunidade | Homologação de fornecedores da plataforma + avaliações de clientes |
 | Q9 | **Direitos de marca** | Uso de marcas de linguagens/projetos (PHP, Python, mascotes etc.) e logos | Cada comunidade responde pelas próprias artes; verificar diretrizes de uso das marcas |
-| Q10 | **LGPD** | Fornecedor recebe dados pessoais do cliente (endereço) | Termo de uso + compartilhar só o necessário para entrega |
+| Q10 | **LGPD** | Fornecedor recebe dados pessoais do cliente (endereço) | Termo de uso + compartilhar só o necessário para entrega. 🔶 Proposta de retenção/exclusão em RN44, a validar |
 | Q11 | **Frete com vários itens** | Somar pesos/dimensões pode dar cotação errada | Fornecedor cadastra embalagens padrão; revisar regra de cubagem |
 | Q12 | **Quem é comunidade?** | Com o escopo aberto a qualquer stack, como evitar empresas ou perfis se passando por comunidade? | Critérios da RN01, aprovação manual e selo "comunidade verificada" |
 | Q13 | **Custo e reputação de e-mail** | Comunidades grandes = milhares de e-mails por lançamento; risco de cair em spam | Agrupamento (RN28), descadastro 1 clique, domínio com SPF/DKIM/DMARC, provedor transacional; acompanhar custo por mil envios |
@@ -1602,6 +1610,8 @@ flowchart LR
 | Q17 | **Critério subjetivo** | "Faz referência a outra comunidade" pode gerar divergência (ex.: referência regional, mascote genérico da linguagem) | Guia público de originalidade com exemplos; contestação por outro moderador (RN36) |
 | Q18 | **Mascote oficial da linguagem** | ✅ Decidido: produto com mascote genérico (ex.: elePHPant sem customização) passa sempre por análise humana, caso a caso (RN33a) | — |
 | Q19 | **Aceite do fornecedor** | Fornecedor não aceita o acordo de taxa % | Acordo só vale após aceite (RN22); até lá, a comunidade absorve |
+| Q20 | **Encerramento de comunidade** | Comunidade suspensa ou que sai da plataforma com pedido em andamento e saldo em conta | 🔶 Proposta inicial em RN43, a validar: pedidos pagos seguem até a entrega, saldo sacável por prazo após o encerramento, produto some da vitrine mas segue no histórico |
+| Q21 | **Overselling em tiragem limitada** | Dois clientes fecham compra do último item da edição ao mesmo tempo | 🔶 Proposta inicial em RN42, a validar: reserva temporária no carrinho + confirmação atômica no pagamento |
 
 ---
 
