@@ -20,8 +20,42 @@
 
 ---
 
+## Resumo em 1 minuto
+
+**Em uma frase:** a comunidade monta a loja, o fornecedor produz e entrega, o cliente compra, e o pagamento é dividido automaticamente entre todos. A comunidade **não compra estoque e não envia nada**: é o modelo de **dropshipping**.
+
+```mermaid
+flowchart LR
+    FOR["🏭 FORNECEDOR<br/>gráfica, canecas, pelúcias<br/><i>tem o estoque e faz o envio</i>"]
+    COM["🏷️ COMUNIDADE<br/>a lojista<br/><i>sem estoque, sem envio</i>"]
+    LOJA["🛒 LOJA DAS COMUNIDADES<br/>vitrine única de todas<br/>as comunidades tech BR"]
+    CLI(("🙋 CLIENTE"))
+    GEF["💳 GEFFINPAY<br/>divide o pagamento<br/>(split)"]
+
+    FOR -- "1 · oferece produtos<br/>com preço de custo" --> COM
+    COM -- "2 · publica o produto<br/>custo + sua margem" --> LOJA
+    CLI -- "3 · compra e paga" --> LOJA
+    LOJA -- "4 · cobra" --> GEF
+    LOJA -- "5 · repassa o pedido" --> FOR
+    FOR -- "6 · produz e envia<br/>direto pelos Correios" --> CLI
+    GEF -- "7 · custo + frete" --> FOR
+    GEF -- "7 · margem" --> COM
+```
+
+| Quem | O que faz | O que ganha |
+|---|---|---|
+| 🏷️ **Comunidade** | Escolhe o fornecedor, cria o produto (camisa, caneca, mascote, item de evento) e define a margem | A **margem** de cada venda, para financiar meetups e eventos |
+| 🏭 **Fornecedor** | Produz, embala e envia **direto ao cliente**, informando o rastreio | O **custo do produto + frete** |
+| 🙋 **Cliente** | Compra de várias comunidades num só carrinho e acompanha as que gosta | Produto oficial e a certeza de que ajuda a comunidade |
+| 🛒 **Plataforma** | Mantém a loja, aprova comunidades e analisa se o produto é original | **R$ 2,49 por saque** de comunidade ou fornecedor (nada sobre as vendas) |
+
+**Por que dropshipping?** Na loja tradicional, a comunidade compra 100 camisas, guarda em casa, embala e posta, e fica com o prejuízo do que sobrar. Aqui, a camisa só é produzida **depois que alguém paga**, e sai do fornecedor direto para o cliente. Risco zero de estoque para a comunidade.
+
+---
+
 ## Sumário
 
+0. [Resumo em 1 minuto](#resumo-em-1-minuto)
 1. [Visão geral](#1-visão-geral)
 2. [Problema e proposta de valor](#2-problema-e-proposta-de-valor)
 3. [Envolvidos (atores)](#3-envolvidos-atores)
