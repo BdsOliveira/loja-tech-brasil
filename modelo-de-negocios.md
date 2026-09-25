@@ -5,6 +5,7 @@
 > *"Loja das Comunidades Tech BR" é nome provisório.*
 
 **Mudanças da v0.3**
+- Biblioteca de UI definida: **DaisyUI**, usando a skill `npx -y skills add saadeghi/daisyui` (§12).
 - Monetização da plataforma: **R$ 2,49 por saque** solicitado pela comunidade (§6, RN24c, §9.9).
 - Parcelamento: por padrão a taxa do parcelado é **repassada ao cliente**; a comunidade pode optar por assumir (sem juros) (§6, RN21).
 - Taxa % do cartão pode ser **absorvida pelo fornecedor** mediante acordo com a comunidade (§6, RN22).
@@ -159,7 +160,7 @@ flowchart TB
 | **Canais** | Site da Loja; divulgação nas comunidades (Telegram, Discord, redes sociais); QR code em eventos e meetups; links por comunidade (`/c/phpeste`); **e-mail de lançamento para seguidores** |
 | **Relacionamento** | Comunitário e transparente: página da comunidade mostrando para onde vai o dinheiro; **acompanhar comunidades**; notificações de pedido e de lançamentos por e-mail |
 | **Fontes de receita** | Comunidade: margem sobre o custo do fornecedor. Plataforma: **R$ 2,49 por saque** solicitado pela comunidade, para cobrir os custos |
-| **Recursos-chave** | Plataforma (código aberto?), integração GeffinPay (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
+| **Recursos-chave** | Plataforma (código aberto?) com UI em DaisyUI, integração GeffinPay (split), integração Correios, rede de fornecedores homologados, voluntários mantenedores |
 | **Atividades-chave** | Manter a plataforma; homologar fornecedores; apoiar comunidades a subir produtos; mediar problemas de entrega |
 | **Parcerias-chave** | Fornecedores (gráficas, canecas, pelúcias); GeffinPay; Correios; organizações dos eventos |
 | **Estrutura de custos** | Cobertos pela tarifa de saque: hospedagem e domínio; taxas do gateway (por transação, ver §6); envio de e-mails (cresce com o nº de seguidores); tempo de voluntários; eventual contrato com os Correios |
@@ -1121,6 +1122,38 @@ erDiagram
 ---
 
 ## 12. Telas envolvidas
+
+### Biblioteca de UI: DaisyUI
+
+As telas serão desenhadas e implementadas com **[DaisyUI](https://daisyui.com/)**, uma biblioteca de componentes para Tailwind CSS.
+
+A DaisyUI tem uma **skill** para agentes de IA, e ela **deve ser usada** para desenhar e implementar as telas:
+
+```bash
+npx -y skills add saadeghi/daisyui
+```
+
+Correspondência sugerida entre os wireframes e os componentes DaisyUI:
+
+| Elemento dos wireframes | Componente DaisyUI |
+|---|---|
+| Cabeçalho da loja, busca, carrinho | `navbar`, `input`, `indicator`, `dropdown` |
+| Menu lateral dos painéis | `drawer` + `menu` |
+| Cards de produto e comunidade | `card`, `badge` |
+| Banner de coleção/edição | `hero`, `countdown` |
+| Botão Acompanhar / Acompanhando | `btn`, `dropdown` |
+| Variações (P/M/G/GG), forma de pagamento | `join` + `radio`, `select` |
+| Tabelas (pedidos, financeiro, saques) | `table` |
+| Números do financeiro e dashboard | `stat` |
+| Status de pedido e de análise | `badge`, `steps` |
+| Destaque do Pix, avisos de margem e análise | `alert` |
+| Confirmação de saque, reprovar com motivo | `modal`, `textarea` |
+| Formulários de cadastro | `fieldset`, `input`, `select`, `toggle`, `file-input` |
+| Checkout em etapas | `steps` |
+| Feedback de ações (salvo, enviado) | `toast` |
+
+- Tema: o tema da DaisyUI (cores, bordas, fontes) será definido junto com a identidade visual da loja. Os temas claro e escuro vêm prontos.
+- Os wireframes desta seção são de baixa fidelidade. O desenho final segue os componentes e o tema da DaisyUI.
 
 ### 12.1 Inventário de telas
 
